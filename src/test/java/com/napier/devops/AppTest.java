@@ -1,4 +1,4 @@
-package devops;
+package com.napier.devops;
 
 import org.junit.jupiter.api.Test;
 
