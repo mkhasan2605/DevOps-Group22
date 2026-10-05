@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v5
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build self-contained jar
+        run: mvn -B package --file pom.xml
+
+      # Starts db and app. The job takes the app's exit code, so a failed connection turns CI red.
+      - name: Run app against database
+        run: docker compose up --build --exit-code-from app
+
+      - name: Clean up
+        if: always()
+        run: docker compose down -v
