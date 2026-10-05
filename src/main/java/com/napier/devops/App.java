@@ -8,14 +8,6 @@ import java.sql.Statement;
 
 /**
  * Entry point for the population reporting application.
- *
- * <p>Arguments (both optional):
- * <ol>
- *   <li>Database location as host:port. Default {@code localhost:33060} for running in IntelliJ.
- *       Docker passes {@code db:3306}.</li>
- *   <li>Delay in milliseconds before each connection attempt. Default 0.
- *       Docker passes 10000 because MySQL starts slower than the app.</li>
- * </ol>
  */
 public class App {
 
