@@ -1,5 +1,6 @@
 
 # SET09803 DevOps Group 22 – Population Information System
+[![CI](https://github.com/mkhasan2605/DevOps-Group22/actions/workflows/main.yml/badge.svg?branch=develop)](https://github.com/mkhasan2605/DevOps-Group22/actions/workflows/main.yml)
 
 ## Project Overview
 
@@ -18,10 +19,10 @@ The project is developed by Group 22 using Scrum and DevOps practices.
 |---|--|---|
 | Mohammad Hasan | 40805651 | mkhasan2605 |
 | Moe Swam Pyae | 40858561 | 40858561-MoeSwamPyae |
-| Sandiisme | TBC | Sandiisme |
+| Sandiisme | 40841071 | Sandiisme |
 | Yashiro | TBC | yashiroexe123456-cmd |
 | Raysharris | TBC | raysharris822-sketch |
-| Ye Yint Aung | TBC | YeYintAung |
+| Ye Yint Aung | 40840498 | YeYintAung |
 
 ## Technologies
 
