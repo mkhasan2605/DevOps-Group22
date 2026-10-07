@@ -1,0 +1,7 @@
+# CODEOWNERS
+# Mohammad Hasan is the required code owner for the entire repository.
+
+* @mkhasan2605
+
+# Protect the CODEOWNERS file itself.
+/.github/CODEOWNERS @mkhasan2605
