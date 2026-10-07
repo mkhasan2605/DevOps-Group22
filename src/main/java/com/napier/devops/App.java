@@ -15,12 +15,12 @@ public class App {
     private static final int RETRIES = 10;
 
     /** Open connection to the world database, or null if not connected. */
-    private Connection con;
+    Connection con;
 
     /**
-     * Connects to the database, runs a sanity check, then disconnects.
+     * Connects to the database, runs the UC01 country reports, then disconnects.
      *
-     * @param args optional database location and delay, see class comment
+     * @param args optional database location and delay
      */
     public static void main(String[] args) {
         String location = args.length > 0 ? args[0] : "localhost:33060";
@@ -28,7 +28,28 @@ public class App {
 
         App app = new App();
         app.connect(location, delay);
-        app.printCityCount();
+
+        // UC01 - Country Reports (MoeSwamPyae, 40858561)
+        CountryReports reports = new CountryReports(app.con);
+
+        System.out.println("========== R01: All countries in the world ==========");
+        reports.printCountries(reports.getAllCountriesByPopulation());
+
+        System.out.println("========== R02: All countries in Asia ==========");
+        reports.printCountries(reports.getCountriesByContinent("Asia"));
+
+        System.out.println("========== R03: All countries in Southeast Asia ==========");
+        reports.printCountries(reports.getCountriesByRegion("Southeast Asia"));
+
+        System.out.println("========== R04: Top 5 countries in the world ==========");
+        reports.printCountries(reports.getTopNCountriesWorld(5));
+
+        System.out.println("========== R05: Top 5 countries in Europe ==========");
+        reports.printCountries(reports.getTopNCountriesContinent("Europe", 5));
+
+        System.out.println("========== R06: Top 5 countries in Western Europe ==========");
+        reports.printCountries(reports.getTopNCountriesRegion("Western Europe", 5));
+
         app.disconnect();
     }
 
@@ -40,8 +61,7 @@ public class App {
      * @param delay    milliseconds to wait before each attempt
      */
     public void connect(String location, int delay) {
-        String url = "jdbc:mysql://" + location
-                + "/world?allowPublicKeyRetrieval=true&useSSL=false";
+        String url = "jdbc:mysql://localhost:3307/world?sslMode=DISABLED&allowPublicKeyRetrieval=true";
 
         for (int i = 1; i <= RETRIES; i++) {
             System.out.println("Connecting to database (attempt " + i + " of " + RETRIES + ")...");
