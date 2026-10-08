@@ -20,10 +20,13 @@ public class App {
     /**
      * Connects to the database, runs the UC01 country reports, then disconnects.
      *
+     * When run inside Docker (e.g. on GitHub Actions), pass "db:3306" as the
+     * first argument. When run locally, pass "localhost:3307".
+     *
      * @param args optional database location and delay
      */
     public static void main(String[] args) {
-        String location = args.length > 0 ? args[0] : "localhost:33060";
+        String location = args.length > 0 ? args[0] : "db:3306";
         int delay = args.length > 1 ? Integer.parseInt(args[1]) : 0;
 
         App app = new App();
@@ -57,11 +60,12 @@ public class App {
      * Connects to the world database, retrying while MySQL starts up.
      * Exits with status 1 if every attempt fails, so CI goes red instead of falsely green.
      *
-     * @param location database host and port, e.g. db:3306
+     * @param location database host and port, e.g. "db:3306" (Docker) or "localhost:3307" (local)
      * @param delay    milliseconds to wait before each attempt
      */
     public void connect(String location, int delay) {
-        String url = "jdbc:mysql://localhost:3307/world?sslMode=DISABLED&allowPublicKeyRetrieval=true";
+        String url = "jdbc:mysql://" + location
+                + "/world?sslMode=DISABLED&allowPublicKeyRetrieval=true";
 
         for (int i = 1; i <= RETRIES; i++) {
             System.out.println("Connecting to database (attempt " + i + " of " + RETRIES + ")...");
