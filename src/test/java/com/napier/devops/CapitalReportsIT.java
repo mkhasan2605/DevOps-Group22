@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CapitalReportsTest {
+public class CapitalReportsIT {
 
     @Test
     public void testAllCapitalCities() throws Exception {
