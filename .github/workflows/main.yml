@@ -21,9 +21,11 @@ jobs:
       - name: Build self-contained jar
         run: mvn -B package --file pom.xml
 
-      # Starts db and app. The job takes the app's exit code, so a failed connection turns CI red.
+      # Starts db and app. The app is passed "db:3306 0" so it connects
+      # to the docker-compose db service (not localhost, which is the app
+      # container itself inside the compose network).
       - name: Run app against database
-        run: docker compose up --build --exit-code-from app
+        run: docker compose run --rm app db:3306 0
 
       - name: Clean up
         if: always()
