@@ -1,3 +1,13 @@
+# CI workflow for the Population Information System.
+# On every push and PR, this builds the project with Maven and then runs
+# the app inside the docker-compose network against the `db` service.
+#
+# NOTE: The app is passed "db:3306 0" as runtime arguments so it can reach
+# the MySQL container by its compose service name. A local developer running
+# App.main() directly from IntelliJ does NOT pass these arguments and will
+# use the code default (localhost:33060). Do not change this line without
+# updating App.java's default too -- see PR #25 discussion.
+
 name: CI
 
 on:
@@ -21,9 +31,11 @@ jobs:
       - name: Build self-contained jar
         run: mvn -B package --file pom.xml
 
-      # Starts db and app. The job takes the app's exit code, so a failed connection turns CI red.
+      # Starts db and app. The app is passed "db:3306 0" so it connects
+      # to the docker-compose db service (not localhost, which is the app
+      # container itself inside the compose network).
       - name: Run app against database
-        run: docker compose up --build --exit-code-from app
+        run: docker compose run --rm app db:3306 0
 
       - name: Clean up
         if: always()
