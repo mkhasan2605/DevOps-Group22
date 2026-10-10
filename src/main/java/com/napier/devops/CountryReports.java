@@ -6,10 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- * Provides the country-based reports for UC01 (R01-R06).
- * Each method returns a list of Country objects that can be printed by printCountries().
- */
+
 public class CountryReports {
 
     /** Database connection shared with App. */
@@ -32,6 +29,7 @@ public class CountryReports {
         String sql = BASE_SELECT + "ORDER BY country.Population DESC";
         return runQuery(sql);
     }
+
 
 
     public ArrayList<Country> getCountriesByContinent(String continent) {
@@ -57,7 +55,6 @@ public class CountryReports {
         return runQuery(sql, n);
     }
 
-
     public ArrayList<Country> getTopNCountriesContinent(String continent, int n) {
         String sql = BASE_SELECT +
                 "WHERE country.Continent = ? " +
@@ -66,6 +63,8 @@ public class CountryReports {
         return runQuery(sql, continent, n);
     }
 
+
+
     public ArrayList<Country> getTopNCountriesRegion(String region, int n) {
         String sql = BASE_SELECT +
                 "WHERE country.Region = ? " +
@@ -73,6 +72,8 @@ public class CountryReports {
                 "LIMIT ?";
         return runQuery(sql, region, n);
     }
+
+
 
     private ArrayList<Country> runQuery(String sql, Object... params) {
         ArrayList<Country> results = new ArrayList<>();
@@ -99,6 +100,7 @@ public class CountryReports {
         }
         return results;
     }
+
 
 
     public void printCountries(ArrayList<Country> countries) {

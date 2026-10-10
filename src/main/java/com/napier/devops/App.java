@@ -6,7 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
+/**
+ * Entry point for the population reporting application.
+ * Connects to the world database, runs the UC01 country reports,
+ * and disconnects.
+ */
 public class App {
 
     /** Number of connection attempts before giving up. */
@@ -15,7 +19,16 @@ public class App {
     /** Open connection to the world database, or null if not connected. */
     private Connection con;
 
-
+    /**
+     * Connects to the database, runs the UC01 country reports, then disconnects.
+     *
+     * Usage:
+     *   - Locally (default):   no args, uses localhost:33060
+     *   - Docker/CI:           pass "db:3306" as the first argument
+     *   - Custom port:         pass "localhost:33060 0" in IntelliJ Run Configuration
+     *
+     * @param args optional database location and delay in milliseconds
+     */
     public static void main(String[] args) {
         String location = args.length > 0 ? args[0] : "localhost:33060";
         int delay = args.length > 1 ? Integer.parseInt(args[1]) : 0;
@@ -27,7 +40,7 @@ public class App {
         app.printCityCount();
 
         // UC01 - Country Reports (MoeSwamPyae, 40858561)
-        CountryReports reports = new CountryReports(app.getCon());
+        CountryReports reports = new CountryReports(app.getConnection());
 
         System.out.println("========== R01: All countries in the world ==========");
         reports.printCountries(reports.getAllCountriesByPopulation());
@@ -50,7 +63,15 @@ public class App {
         app.disconnect();
     }
 
-
+    /**
+     * Connects to the world database, retrying while MySQL starts up.
+     * Exits with status 1 if every attempt fails, so CI goes red instead of
+     * falsely green.
+     *
+     * @param location database host and port, e.g. "db:3306" (Docker)
+     *                 or "localhost:33060" (local)
+     * @param delay    milliseconds to wait before each attempt
+     */
     public void connect(String location, int delay) {
         String url = "jdbc:mysql://" + location
                 + "/world?sslMode=DISABLED&allowPublicKeyRetrieval=true";
@@ -73,7 +94,10 @@ public class App {
         System.exit(1);
     }
 
-
+    /**
+     * Prints the number of rows in the city table.
+     * The world database has 4079 cities.
+     */
     public void printCityCount() {
         try (Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM city")) {
@@ -86,7 +110,9 @@ public class App {
         }
     }
 
-
+    /**
+     * Closes the database connection if one is open.
+     */
     public void disconnect() {
         if (con != null) {
             try {
@@ -97,8 +123,12 @@ public class App {
         }
     }
 
-
-    public Connection getCon() {
+    /**
+     * Returns the current database connection.
+     *
+     * @return the open connection, or null if not connected
+     */
+    public Connection getConnection() {
         return con;
     }
 }

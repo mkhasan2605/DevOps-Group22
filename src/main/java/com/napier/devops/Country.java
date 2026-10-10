@@ -24,6 +24,32 @@ public class Country {
     /** Name of the capital city, or null if the country has no capital. */
     private String capital;
 
+    /**
+     * Creates an empty Country. Fields can be populated via setters.
+     */
+    public Country() {
+    }
+
+    /**
+     * Creates a fully populated Country.
+     *
+     * @param code       ISO country code, e.g. "GBR"
+     * @param name       country name, e.g. "United Kingdom"
+     * @param continent  continent name, e.g. "Europe"
+     * @param region     region name, e.g. "British Islands"
+     * @param population total population of the country
+     * @param capital    name of the capital city, or null if none
+     */
+    public Country(String code, String name, String continent,
+                   String region, int population, String capital) {
+        this.code = code;
+        this.name = name;
+        this.continent = continent;
+        this.region = region;
+        this.population = population;
+        this.capital = capital;
+    }
+
     /** @return the ISO country code */
     public String getCode() { return code; }
 
@@ -59,4 +85,20 @@ public class Country {
 
     /** @param capital the capital city name to set */
     public void setCapital(String capital) { this.capital = capital; }
+
+    /**
+     * Returns a pipe-separated, human-readable representation of the country.
+     *
+     * @return formatted country details
+     */
+    @Override
+    public String toString() {
+        return String.format("%s | %s | %s | %s | %d | %s",
+                code,
+                name,
+                continent,
+                region,
+                population,
+                capital == null ? "N/A" : capital);
+    }
 }
