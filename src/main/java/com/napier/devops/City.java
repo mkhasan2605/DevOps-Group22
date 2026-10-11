@@ -1,8 +1,7 @@
 package com.napier.devops;
 
 /**
- * Represents a city report row containing Name, Country, District, and Population.
- * Part of UC02 (City Reports).
+ * One row of a city report (UC02, R07-R16): Name, Country, District and Population.
  */
 public class City {
 
@@ -12,12 +11,12 @@ public class City {
     private final int population;
 
     /**
-     * Constructs a new City model instance.
+     * Creates a city report row.
      *
-     * @param name       City name
-     * @param country    Country name
-     * @param district   District name
-     * @param population City population
+     * @param name       city name
+     * @param country    name of the country the city is in
+     * @param district   district name
+     * @param population city population
      */
     public City(String name, String country, String district, int population) {
         this.name = name;
@@ -27,36 +26,36 @@ public class City {
     }
 
     /**
-     * Gets the city name.
+     * Returns the city name.
      *
-     * @return name
+     * @return the city name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Gets the country name.
+     * Returns the country name.
      *
-     * @return country
+     * @return the country name
      */
     public String getCountry() {
         return country;
     }
 
     /**
-     * Gets the district name.
+     * Returns the district name.
      *
-     * @return district
+     * @return the district name
      */
     public String getDistrict() {
         return district;
     }
 
     /**
-     * Gets the population of the city.
+     * Returns the city population.
      *
-     * @return population
+     * @return the city population
      */
     public int getPopulation() {
         return population;
@@ -64,7 +63,6 @@ public class City {
 
     @Override
     public String toString() {
-        return String.format("%-35s %-35s %-25s %12d",
-                name, country, district, population);
+        return String.format("%s | %s | %s | %d", name, country, district, population);
     }
 }
