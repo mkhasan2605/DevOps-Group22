@@ -1,3 +1,5 @@
+# CI: build the self-contained jar with Maven, then run the app in Docker against the world database.
+# The app's database location (db:3306) and start-up delay are set by the ENTRYPOINT in the Dockerfile.
 name: CI
 
 on:
@@ -6,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out code
         uses: actions/checkout@v5
@@ -21,7 +23,6 @@ jobs:
       - name: Build self-contained jar
         run: mvn -B package --file pom.xml
 
-      # Starts db and app. The job takes the app's exit code, so a failed connection turns CI red.
       - name: Run app against database
         run: docker compose up --build --exit-code-from app
 
