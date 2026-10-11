@@ -48,10 +48,14 @@ See [Functional Requirements and Evidence](#functional-requirements-and-evidence
 DevOps-Group22/
 ├── .github/
 │   ├── CODEOWNERS
+│   ├── pull_request_template.md    # Checklist added to every new PR
 │   └── workflows/main.yml          # CI: Maven build, then run the app against MySQL in Docker
 ├── db/
 │   ├── Dockerfile                  # MySQL 8.4 image that loads world.sql on first start
 │   └── world.sql
+├── docs/
+│   ├── screenshots/                # Report output used as requirement evidence
+│   └── use-cases/                  # Use case descriptions and diagram
 ├── src/
 │   ├── main/java/com/napier/devops/
 │   │   ├── App.java                # Entry point: connects and runs every report
@@ -63,7 +67,6 @@ DevOps-Group22/
 │   │   ├── PopulationReports.java  # UC04  R23-R25  (PopulationReport)
 │   │   └── PlacePopulationReports.java  # UC05  R27-R29  (PlacePopulation)
 │   └── test/java/com/napier/devops/
-├── use-cases/                      # Use case descriptions and diagram
 ├── docker-compose.yml
 ├── Dockerfile                      # Runs target/app.jar against the db service
 ├── pom.xml
@@ -127,9 +130,9 @@ See [SETUP.md](SETUP.md) for commands and further detail.
 | R20 | Top N populated capital cities worldwide                                                                                      | Yes | —          |
 | R21 | Top N populated capital cities in a continent                                                                                 | Yes | —          |
 | R22 | Top N populated capital cities in a region                                                                                    | Yes | —          |
-| R23 | Population, city population and non-city population by continent                                                              | Yes | —          |
-| R24 | Population, city population and non-city population by region                                                                 | Yes | —          |
-| R25 | Population, city population and non-city population by country                                                                | Yes | —          |
+| R23 | Population, city population and non-city population by continent                                                              | Yes | [View](docs/screenshots/R-23.jpg) |
+| R24 | Population, city population and non-city population by region                                                                 | Yes | [View](docs/screenshots/R-24.jpg) |
+| R25 | Population, city population and non-city population by country                                                                | Yes | [View](docs/screenshots/R-25.jpg) |
 | R26 | Population of the world                                                                                                       | No  | —          |
 | R27 | Population of a continent                                                                                                     | Yes | —          |
 | R28 | Population of a region                                                                                                        | Yes | —          |
@@ -138,7 +141,21 @@ See [SETUP.md](SETUP.md) for commands and further detail.
 | R31 | Population of a city                                                                                                          | No  | —          |
 | R32 | Number and percentage of world population speaking Chinese, English, Hindi, Spanish and Arabic, ordered by number of speakers | No  | —          |
 
-Screenshots of each report's output are still to be added.
+Screenshots for the remaining requirements are still to be added.
+
+### Evidence
+
+#### R23 – Population in and out of cities by continent
+
+![R23 output](docs/screenshots/R-23.jpg)
+
+#### R24 – Population in and out of cities by region
+
+![R24 output](docs/screenshots/R-24.jpg)
+
+#### R25 – Population in and out of cities by country (first rows)
+
+![R25 output](docs/screenshots/R-25.jpg)
 
 ## Licence
 

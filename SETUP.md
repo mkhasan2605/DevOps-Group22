@@ -205,9 +205,11 @@ DevOps-Group22/
 ├── db/
 │   ├── Dockerfile               # MySQL 8.4 image that loads world.sql
 │   └── world.sql                # The world database
+├── docs/
+│   ├── screenshots/             # Report output used as requirement evidence
+│   └── use-cases/               # Use case descriptions and diagram
 ├── src/main/java/com/napier/devops/   # Application source
 ├── src/test/java/com/napier/devops/   # Tests
-├── use-cases/                   # Use case descriptions and diagram
 ├── docker-compose.yml           # Runs the db and app containers together
 ├── Dockerfile                   # Application image: runs target/app.jar
 ├── pom.xml                      # Maven build: Java 17, JUnit 5, MySQL driver
