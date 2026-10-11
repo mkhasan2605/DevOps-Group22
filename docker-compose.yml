@@ -3,7 +3,16 @@ services:
     build: db/.
     ports:
       - "33060:3306"
+    # Healthy only once MySQL accepts TCP connections, i.e. after world.sql has been imported
+    # (the temporary server used during the import does not listen on TCP).
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pexample"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
   app:
     build: .
     depends_on:
-      - db
+      db:
+        condition: service_healthy
