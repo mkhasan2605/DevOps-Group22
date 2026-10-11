@@ -6,13 +6,8 @@ package com.napier.devops;
  */
 public class PopulationReport {
 
-    /** Name of the continent, region or country. */
     private final String name;
-
-    /** Total population. */
     private final long totalPopulation;
-
-    /** Population living in cities. */
     private final long cityPopulation;
 
     /**
@@ -28,17 +23,29 @@ public class PopulationReport {
         this.cityPopulation = cityPopulation;
     }
 
-    /** @return name of the continent, region or country */
+    /**
+     * Returns the name of the continent, region or country.
+     *
+     * @return name of the continent, region or country
+     */
     public String getName() {
         return name;
     }
 
-    /** @return total population */
+    /**
+     * Returns the total population.
+     *
+     * @return total population
+     */
     public long getTotalPopulation() {
         return totalPopulation;
     }
 
-    /** @return population living in cities */
+    /**
+     * Returns the population living in cities.
+     *
+     * @return population living in cities
+     */
     public long getCityPopulation() {
         return cityPopulation;
     }
