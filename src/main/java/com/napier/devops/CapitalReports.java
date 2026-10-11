@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 public class CapitalReports {
 
+    /** Database connection shared with App. */
     private final Connection con;
 
     /**
@@ -22,6 +23,7 @@ public class CapitalReports {
     public CapitalReports(Connection con) {
         this.con = con;
     }
+
     /**
      * R17: Gets all capital cities in the world,
      * ordered by population from largest to smallest.
@@ -57,6 +59,7 @@ public class CapitalReports {
 
         return capitals;
     }
+
     /**
      * R18: Gets all capital cities in a specified continent,
      * ordered by population from largest to smallest.
@@ -97,6 +100,7 @@ public class CapitalReports {
 
         return capitals;
     }
+
     /**
      * R19: Gets all capital cities in a specified region,
      * ordered by population from largest to smallest.
@@ -137,6 +141,7 @@ public class CapitalReports {
 
         return capitals;
     }
+
     /**
      * R20: Gets the top N capital cities in the world,
      * ordered by population from largest to smallest.
@@ -182,6 +187,7 @@ public class CapitalReports {
 
         return capitals;
     }
+
     /**
      * R21: Gets the top N capital cities in a specified continent,
      * ordered by population from largest to smallest.
@@ -230,6 +236,7 @@ public class CapitalReports {
 
         return capitals;
     }
+
     /**
      * R22: Gets the top N capital cities in a specified region,
      * ordered by population from largest to smallest.
