@@ -22,10 +22,12 @@ public class App {
     /**
      * Connects to the database, runs the UC01 country reports, then disconnects.
      *
-     * Usage:
-     *   - Locally (default):   no args, uses localhost:33060
-     *   - Docker/CI:           pass "db:3306" as the first argument
-     *   - Custom port:         pass "localhost:33060 0" in IntelliJ Run Configuration
+     * <p>Usage:
+     * <ul>
+     *   <li>Locally (default): no args, uses localhost:33060</li>
+     *   <li>Docker/CI: the Dockerfile ENTRYPOINT passes "db:3306 10000"</li>
+     *   <li>Custom port: set e.g. "localhost:3307 0" in the IntelliJ Run Configuration</li>
+     * </ul>
      *
      * @param args optional database location and delay in milliseconds
      */

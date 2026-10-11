@@ -8,8 +8,14 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Integration tests for CapitalReports (UC03, R17-R22).
+ * These need the world database running on localhost:33060, so they are named *IT
+ * and are not run by "mvn package".
+ */
 public class CapitalReportsIT {
 
+    // R17 - All capital cities in the world
     @Test
     public void testAllCapitalCities() throws Exception {
 
@@ -28,19 +34,21 @@ public class CapitalReportsIT {
             assertEquals(232, capitals.size());
 
             // Check the first capital city
-            assertEquals("Seoul", capitals.get(0).name);
-            assertEquals("South Korea", capitals.get(0).country);
-            assertEquals(9981619, capitals.get(0).population);
+            assertEquals("Seoul", capitals.get(0).name());
+            assertEquals("South Korea", capitals.get(0).country());
+            assertEquals(9981619, capitals.get(0).population());
 
             // Check that all capitals are sorted by population
             for (int i = 0; i < capitals.size() - 1; i++) {
                 assertTrue(
-                        capitals.get(i).population >=
-                                capitals.get(i + 1).population
+                        capitals.get(i).population() >=
+                                capitals.get(i + 1).population()
                 );
             }
         }
     }
+
+    // R18 - All capital cities in a continent
     @Test
     public void testCapitalCitiesByContinent() throws Exception {
 
@@ -59,15 +67,15 @@ public class CapitalReportsIT {
             assertEquals(51, capitals.size());
 
             // Check the first capital
-            assertEquals("Seoul", capitals.get(0).name);
-            assertEquals("South Korea", capitals.get(0).country);
-            assertEquals(9981619, capitals.get(0).population);
+            assertEquals("Seoul", capitals.get(0).name());
+            assertEquals("South Korea", capitals.get(0).country());
+            assertEquals(9981619, capitals.get(0).population());
 
             // Check descending population order
             for (int i = 0; i < capitals.size() - 1; i++) {
                 assertTrue(
-                        capitals.get(i).population >=
-                                capitals.get(i + 1).population
+                        capitals.get(i).population() >=
+                                capitals.get(i + 1).population()
                 );
             }
         }
@@ -88,13 +96,13 @@ public class CapitalReportsIT {
                     reports.getCapitalCitiesByRegion("Southeast Asia");
 
             assertEquals(11, capitals.size());
-            assertEquals("Jakarta", capitals.get(0).name);
-            assertEquals("Indonesia", capitals.get(0).country);
-            assertEquals(9604900, capitals.get(0).population);
+            assertEquals("Jakarta", capitals.get(0).name());
+            assertEquals("Indonesia", capitals.get(0).country());
+            assertEquals(9604900, capitals.get(0).population());
 
             for (int i = 0; i < capitals.size() - 1; i++) {
-                assertTrue(capitals.get(i).population >=
-                        capitals.get(i + 1).population);
+                assertTrue(capitals.get(i).population() >=
+                        capitals.get(i + 1).population());
             }
         }
     }
@@ -115,14 +123,14 @@ public class CapitalReportsIT {
                     reports.getTopNCapitalCitiesWorld(5);
 
             assertEquals(5, capitals.size());
-            assertEquals("Seoul", capitals.get(0).name);
-            assertEquals("South Korea", capitals.get(0).country);
-            assertEquals(9981619, capitals.get(0).population);
-            assertEquals("Tokyo", capitals.get(4).name);
+            assertEquals("Seoul", capitals.get(0).name());
+            assertEquals("South Korea", capitals.get(0).country());
+            assertEquals(9981619, capitals.get(0).population());
+            assertEquals("Tokyo", capitals.get(4).name());
 
             for (int i = 0; i < capitals.size() - 1; i++) {
-                assertTrue(capitals.get(i).population >=
-                        capitals.get(i + 1).population);
+                assertTrue(capitals.get(i).population() >=
+                        capitals.get(i + 1).population());
             }
         }
     }
@@ -143,14 +151,14 @@ public class CapitalReportsIT {
                     reports.getTopNCapitalCitiesContinent("Asia", 5);
 
             assertEquals(5, capitals.size());
-            assertEquals("Seoul", capitals.get(0).name);
-            assertEquals("South Korea", capitals.get(0).country);
-            assertEquals(9981619, capitals.get(0).population);
-            assertEquals("Teheran", capitals.get(4).name);
+            assertEquals("Seoul", capitals.get(0).name());
+            assertEquals("South Korea", capitals.get(0).country());
+            assertEquals(9981619, capitals.get(0).population());
+            assertEquals("Teheran", capitals.get(4).name());
 
             for (int i = 0; i < capitals.size() - 1; i++) {
-                assertTrue(capitals.get(i).population >=
-                        capitals.get(i + 1).population);
+                assertTrue(capitals.get(i).population() >=
+                        capitals.get(i + 1).population());
             }
         }
     }
@@ -171,14 +179,14 @@ public class CapitalReportsIT {
                     reports.getTopNCapitalCitiesRegion("Southeast Asia", 5);
 
             assertEquals(5, capitals.size());
-            assertEquals("Jakarta", capitals.get(0).name);
-            assertEquals("Indonesia", capitals.get(0).country);
-            assertEquals(9604900, capitals.get(0).population);
-            assertEquals("Manila", capitals.get(4).name);
+            assertEquals("Jakarta", capitals.get(0).name());
+            assertEquals("Indonesia", capitals.get(0).country());
+            assertEquals(9604900, capitals.get(0).population());
+            assertEquals("Manila", capitals.get(4).name());
 
             for (int i = 0; i < capitals.size() - 1; i++) {
-                assertTrue(capitals.get(i).population >=
-                        capitals.get(i + 1).population);
+                assertTrue(capitals.get(i).population() >=
+                        capitals.get(i + 1).population());
             }
         }
     }
