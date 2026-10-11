@@ -62,6 +62,13 @@ public class App {
         System.out.println("========== R06: Top 5 countries in Western Europe ==========");
         reports.printCountries(reports.getTopNCountriesRegion("Western Europe", 5));
 
+        // UC04 - Population Breakdowns (Mohammad Hasan, 40805651)
+        ReportPrinter printer = new ReportPrinter();
+        PopulationReports population = new PopulationReports(app.getConnection());
+        printer.printPopulation("R23 - Population in and out of cities by continent", population.byContinent());
+        printer.printPopulation("R24 - Population in and out of cities by region", population.byRegion());
+        printer.printPopulation("R25 - Population in and out of cities by country", population.byCountry());
+
         app.disconnect();
     }
 
