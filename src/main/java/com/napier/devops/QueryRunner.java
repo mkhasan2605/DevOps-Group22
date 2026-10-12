@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Shared JDBC helper for the report classes.
  * Runs a parameterised SELECT and maps each row to an object, so the
- * statement handling and error reporting live in one place.
+ * statement handling and error handling live in one place.
  */
 final class QueryRunner {
 
@@ -37,20 +37,20 @@ final class QueryRunner {
     /**
      * Runs a query and maps every row it returns.
      *
-     * @param con    open connection to the world database; null skips the query
+     * @param con    open connection to the world database
      * @param sql    query to run, with ? placeholders
      * @param mapper converts each row to an object
      * @param params values for the placeholders, in order
      * @param <T>    type of object produced for each row
-     * @return the mapped rows; empty if there is no connection or the query fails
+     * @return the mapped rows; empty only if the query matched nothing
+     * @throws ReportException if there is no connection or the query fails
      */
     static <T> ArrayList<T> query(Connection con, String sql, RowMapper<T> mapper,
             Object... params) {
-        ArrayList<T> results = new ArrayList<>();
         if (con == null) {
-            System.out.println("Query skipped: not connected to the database");
-            return results;
+            throw new ReportException("Not connected to the database", null);
         }
+        ArrayList<T> results = new ArrayList<>();
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
             for (int i = 0; i < params.length; i++) {
                 stmt.setObject(i + 1, params[i]);
@@ -61,7 +61,7 @@ final class QueryRunner {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Query failed: " + e.getMessage());
+            throw new ReportException("Query failed: " + e.getMessage(), e);
         }
         return results;
     }

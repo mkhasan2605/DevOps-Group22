@@ -24,7 +24,7 @@ public class PlacePopulationReports {
      * R27: the population of a continent.
      *
      * @param continent continent name, e.g. "Asia"
-     * @return the continent's population, or null if it is not found or the query fails
+     * @return the continent's population, or null if it is not found
      */
     public PlacePopulation getContinentPopulation(String continent) {
         return run("""
@@ -39,7 +39,7 @@ public class PlacePopulationReports {
      * R28: the population of a region.
      *
      * @param region region name, e.g. "Southeast Asia"
-     * @return the region's population, or null if it is not found or the query fails
+     * @return the region's population, or null if it is not found
      */
     public PlacePopulation getRegionPopulation(String region) {
         return run("""
@@ -54,7 +54,7 @@ public class PlacePopulationReports {
      * R29: the population of a country.
      *
      * @param country country name, e.g. "United Kingdom"
-     * @return the country's population, or null if it is not found or the query fails
+     * @return the country's population, or null if it is not found
      */
     public PlacePopulation getCountryPopulation(String country) {
         return run("""

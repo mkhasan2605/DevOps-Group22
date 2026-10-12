@@ -3,10 +3,10 @@ services:
     build: db/.
     ports:
       - "33060:3306"
-    # Healthy only once MySQL accepts TCP connections, i.e. after world.sql has been imported
-    # (the temporary server used during the import does not listen on TCP).
+    # Healthy only once the world database is loaded and queryable over TCP.
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pexample"]
+      test: ["CMD", "mysql", "-h", "127.0.0.1", "-uroot", "-pexample",
+             "-e", "SELECT 1 FROM world.city LIMIT 1"]
       interval: 5s
       timeout: 5s
       retries: 30

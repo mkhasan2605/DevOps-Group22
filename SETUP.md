@@ -326,7 +326,7 @@ mvn clean package
 docker compose up --build --exit-code-from app
 ```
 
-Compose builds both images, waits until the database is healthy, then runs the app. The command exits when the app finishes, with the app's exit code: `0` if every report ran, `1` if the app could not reach the database.
+Compose builds both images, waits until the database is healthy, then runs the app. The command exits when the app finishes, with the app's exit code: `0` if every report ran, `1` if the app could not reach the database or a report failed (the error is printed as `Report failed: ...`).
 
 ### 11.3 Clean up
 
@@ -336,7 +336,7 @@ docker compose down -v
 
 `-v` also deletes the database volume, so the next start imports `world.sql` again from scratch.
 
-**Success check:** the app prints `Successfully connected`, `Cities in database: 4079`, and every report section without `Query failed` messages.
+**Success check:** the app prints `Successfully connected`, `Cities in database: 4079`, and every report section, with no `Report failed` message.
 
 ## 12. Check GitHub Actions
 

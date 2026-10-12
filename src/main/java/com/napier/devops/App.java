@@ -25,8 +25,8 @@ public class App {
 
     /**
      * Connects to the database, runs all reports, then disconnects.
-     * Exits with status 1 if the database cannot be reached, so CI fails
-     * instead of passing silently.
+     * Exits with status 1 if the database cannot be reached or any report fails,
+     * so CI fails instead of passing silently.
      *
      * <p>Usage:
      * <ul>
@@ -52,6 +52,9 @@ public class App {
             if (ok) {
                 app.runReports();
             }
+        } catch (ReportException e) {
+            System.out.println("Report failed: " + e.getMessage());
+            ok = false;
         } finally {
             app.disconnect();
         }

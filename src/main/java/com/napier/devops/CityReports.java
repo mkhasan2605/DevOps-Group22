@@ -226,7 +226,8 @@ public class CityReports {
 
     /**
      * Creates the output file with a title, then writes the body.
-     * Errors are printed, not thrown.
+     *
+     * @throws ReportException if the directory or file cannot be written
      */
     private void writeFile(String fileName, String title, ReportBody body) {
         Path file = outputDirectory.resolve(fileName);
@@ -241,7 +242,8 @@ public class CityReports {
             }
             System.out.println("Created report: " + file.toAbsolutePath());
         } catch (IOException e) {
-            System.out.println("Could not write " + file.toAbsolutePath() + ": " + e.getMessage());
+            throw new ReportException(
+                    "Could not write " + file.toAbsolutePath() + ": " + e.getMessage(), e);
         }
     }
 
