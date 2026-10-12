@@ -1,10 +1,7 @@
-
 # SET09803 DevOps Group 22 – Population Information System
 [![Build – master](https://github.com/mkhasan2605/DevOps-Group22/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/mkhasan2605/DevOps-Group22/actions/workflows/main.yml)
 [![Build – develop](https://github.com/mkhasan2605/DevOps-Group22/actions/workflows/main.yml/badge.svg?branch=develop)](https://github.com/mkhasan2605/DevOps-Group22/actions/workflows/main.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-
-> **Project status:** The build and coverage badges must be checked against the actual GitHub Actions workflow. A coverage badge and release badge will be added when the corresponding reporting and release setup is available.
 
 ## Project Overview
 
@@ -17,15 +14,21 @@ information and languages.
 
 The project is developed by Group 22 using Scrum and DevOps practices.
 
+## Progress
+
+![Requirements met](https://img.shields.io/badge/requirements%20met-28%2F32%20%2887.5%25%29-brightgreen)
+
+See [Functional Requirements and Evidence](#functional-requirements-and-evidence) for the full list.
+
 ## Team Members
 
 | Team Member    | Matriculation Number | GitHub Username      |
 |----------------|----------------------|----------------------|
 | Mohammad Hasan | 40805651             | mkhasan2605          |
 | Moe Swam Pyae  | 40858561             | 40858561-MoeSwamPyae |
-| Sandiisme      | 40841071             | Sandiisme            |
-| Yashiro        | 40841087             | yashiroexe123456-cmd |
-| Raysharris     | 40840483             | raysharris822-sketch |
+| Sandi Tun      | 40841071             | Sandiisme            |
+| Shan Htet Aung | 40841087             | yashiroexe123456-cmd |
+| Kyaw Zin Hein  | 40840483             | raysharris822-sketch |
 | Ye Yint Aung   | 40840498             | YeYintAung           |
 
 ## Technologies
@@ -41,41 +44,50 @@ The project is developed by Group 22 using Scrum and DevOps practices.
 
 ## Project Structure
 
-The following is the **intended structure**. Update it to match the actual repository as files are added; do not leave planned files presented as if they already exist.
-
 ```text
 DevOps-Group22/
 ├── .github/
+│   ├── CODEOWNERS
+│   ├── pull_request_template.md    # Checklist added to every new PR
+│   └── workflows/main.yml          # CI: Maven build, then run the app against MySQL in Docker
 ├── db/
-│   ├── Dockerfile
+│   ├── Dockerfile                  # MySQL 8.4 image that loads world.sql on first start
 │   └── world.sql
+├── docs/
+│   ├── screenshots/                # Report output used as requirement evidence
+│   └── use-cases/                  # Use case descriptions and diagram
 ├── src/
-│   ├── main/
-│   └── test/
-├── use-cases/
-│   └── UC02-city-reports.md
-├── .gitignore
-├── CODE_OF_CONDUCT.md
+│   ├── main/java/com/napier/devops/
+│   │   ├── App.java                # Entry point: connects and runs every report
+│   │   ├── QueryRunner.java        # Shared JDBC query helper
+│   │   ├── ReportPrinter.java      # Console table output for all reports
+│   │   ├── CountryReports.java     # UC01  R01-R06  (Country)
+│   │   ├── CityReports.java        # UC02  R07-R16  (City)
+│   │   ├── CapitalReports.java     # UC03  R17-R22  (CapitalCity)
+│   │   ├── PopulationReports.java  # UC04  R23-R25  (PopulationReport)
+│   │   └── PlacePopulationReports.java  # UC05  R27-R29  (PlacePopulation)
+│   └── test/java/com/napier/devops/
 ├── docker-compose.yml
-├── Dockerfile
-├── LICENSE
+├── Dockerfile                      # Runs target/app.jar against the db service
 ├── pom.xml
+├── CODE_OF_CONDUCT.md
+├── LICENSE
 ├── README.md
 └── SETUP.md
 ```
 
 ## Quick Start
 
-See [SETUP.md](SETUP.md) for the full installation guide and for database/Docker steps.
-
-Once the Maven project and its configuration are present, the standard build and test commands are:
+See [SETUP.md](SETUP.md) for the full installation guide.
 
 ```bash
-mvn clean test
-mvn package
+mvn clean package                      # builds target/app.jar
+docker compose up --build              # starts MySQL and runs the app against it
 ```
 
-These commands must be run from the directory containing `pom.xml`. Check the current repository and confirm the commands pass before treating them as verified project instructions.
+To run from IntelliJ instead, start only the database (`docker compose up db`) and run `App`
+with no arguments; it connects to `localhost:33060`. The R07-R11 city reports are written as
+text files to the `reports/` directory.
 
 ## Development Workflow
 
@@ -92,46 +104,58 @@ See [SETUP.md](SETUP.md) for commands and further detail.
 
 ## Functional Requirements and Evidence
 
-The coursework specification states that there are **32 requirements**. The final README must state how many are met and the percentage, with evidence for each requirement. Mark a requirement as met only after checking the implementation and capturing evidence of its output.
+**28 of 32 requirements met (87.50%).**
 
-**Verified completion count: not yet assessed.** This does not mean that no requirements have been implemented; the team must assess each one against the coursework specification before reporting a count or percentage.
+| ID  | Requirement                                                                                                                   | Met | Screenshot |
+|-----|-------------------------------------------------------------------------------------------------------------------------------|-----|------------|
+| R01 | All countries worldwide, ordered by population descending                                                                     | Yes | —          |
+| R02 | All countries in a continent, ordered by population descending                                                                | Yes | —          |
+| R03 | All countries in a region, ordered by population descending                                                                   | Yes | —          |
+| R04 | Top N populated countries worldwide                                                                                           | Yes | —          |
+| R05 | Top N populated countries in a continent                                                                                      | Yes | —          |
+| R06 | Top N populated countries in a region                                                                                         | Yes | —          |
+| R07 | All cities worldwide, ordered by population descending                                                                        | Yes | —          |
+| R08 | All cities in a continent, ordered by population descending                                                                   | Yes | —          |
+| R09 | All cities in a region, ordered by population descending                                                                      | Yes | —          |
+| R10 | All cities in a country, ordered by population descending                                                                     | Yes | —          |
+| R11 | All cities in a district, ordered by population descending                                                                    | Yes | —          |
+| R12 | Top N populated cities worldwide                                                                                              | Yes | —          |
+| R13 | Top N populated cities in a continent                                                                                         | Yes | —          |
+| R14 | Top N populated cities in a region                                                                                            | Yes | —          |
+| R15 | Top N populated cities in a country                                                                                           | Yes | —          |
+| R16 | Top N populated cities in a district                                                                                          | Yes | —          |
+| R17 | All capital cities worldwide, ordered by population descending                                                                | Yes | —          |
+| R18 | All capital cities in a continent, ordered by population descending                                                           | Yes | —          |
+| R19 | All capital cities in a region, ordered by population descending                                                              | Yes | —          |
+| R20 | Top N populated capital cities worldwide                                                                                      | Yes | —          |
+| R21 | Top N populated capital cities in a continent                                                                                 | Yes | —          |
+| R22 | Top N populated capital cities in a region                                                                                    | Yes | —          |
+| R23 | Population, city population and non-city population by continent                                                              | Yes | [View](docs/screenshots/R-23.jpg) |
+| R24 | Population, city population and non-city population by region                                                                 | Yes | [View](docs/screenshots/R-24.jpg) |
+| R25 | Population, city population and non-city population by country                                                                | Yes | [View](docs/screenshots/R-25.jpg) |
+| R26 | Population of the world                                                                                                       | No  | —          |
+| R27 | Population of a continent                                                                                                     | Yes | —          |
+| R28 | Population of a region                                                                                                        | Yes | —          |
+| R29 | Population of a country                                                                                                       | Yes | —          |
+| R30 | Population of a district                                                                                                      | No  | —          |
+| R31 | Population of a city                                                                                                          | No  | —          |
+| R32 | Number and percentage of world population speaking Chinese, English, Hindi, Spanish and Arabic, ordered by number of speakers | No  | —          |
 
-| ID  | Requirement                                                                                                                   | Met (Yes/No) | Screenshot |
-|-----|-------------------------------------------------------------------------------------------------------------------------------|--------------|------------|
-| R01 | All countries worldwide, ordered by population descending                                                                     | No           | —          |
-| R02 | All countries in a continent, ordered by population descending                                                                | No           | —          |
-| R03 | All countries in a region, ordered by population descending                                                                   | No           | —          |
-| R04 | Top N populated countries worldwide                                                                                           | No           | —          |
-| R05 | Top N populated countries in a continent                                                                                      | No           | —          |
-| R06 | Top N populated countries in a region                                                                                         | No           | —          |
-| R07 | All cities worldwide, ordered by population descending                                                                        | No           | —          |
-| R08 | All cities in a continent, ordered by population descending                                                                   | No           | —          |
-| R09 | All cities in a region, ordered by population descending                                                                      | No           | —          |
-| R10 | All cities in a country, ordered by population descending                                                                     | No           | —          |
-| R11 | All cities in a district, ordered by population descending                                                                    | No           | —          |
-| R12 | Top N populated cities worldwide                                                                                              | No           | —          |
-| R13 | Top N populated cities in a continent                                                                                         | No           | —          |
-| R14 | Top N populated cities in a region                                                                                            | No           | —          |
-| R15 | Top N populated cities in a country                                                                                           | No           | —          |
-| R16 | Top N populated cities in a district                                                                                          | No           | —          |
-| R17 | All capital cities worldwide, ordered by population descending                                                                | No           | —          |
-| R18 | All capital cities in a continent, ordered by population descending                                                           | No           | —          |
-| R19 | All capital cities in a region, ordered by population descending                                                              | No           | —          |
-| R20 | Top N populated capital cities worldwide                                                                                      | No           | —          |
-| R21 | Top N populated capital cities in a continent                                                                                 | No           | —          |
-| R22 | Top N populated capital cities in a region                                                                                    | No           | —          |
-| R23 | Population, city population and non-city population by continent                                                              | No           | —          |
-| R24 | Population, city population and non-city population by region                                                                 | No           | —          |
-| R25 | Population, city population and non-city population by country                                                                | No           | —          |
-| R26 | Population of a city                                                                                                          | No           | —          |
-| R27 | Population of the world                                                                                                       | No           | —          |
-| R28 | Population of a continent                                                                                                     | No           | —          |
-| R29 | Population of a region                                                                                                        | No           | —          |
-| R30 | Population of a country                                                                                                       | No           | —          |
-| R31 | Population of a district                                                                                                      | No           | —          |
-| R32 | Number and percentage of world population speaking Chinese, English, Hindi, Spanish and Arabic, ordered by number of speakers | No           | —          |
+Screenshots for the remaining requirements are still to be added.
 
-**Important:** R01–R32 are the team's tracking IDs. Confirm that their descriptions and numbering match the group's Issues, use cases and coursework specification before final submission. Replace `No` and `—` only when implementation and evidence have been checked.
+### Evidence
+
+#### R23 – Population in and out of cities by continent
+
+![R23 output](docs/screenshots/R-23.jpg)
+
+#### R24 – Population in and out of cities by region
+
+![R24 output](docs/screenshots/R-24.jpg)
+
+#### R25 – Population in and out of cities by country (first rows)
+
+![R25 output](docs/screenshots/R-25.jpg)
 
 ## Licence
 

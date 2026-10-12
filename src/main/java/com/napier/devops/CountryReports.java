@@ -1,189 +1,116 @@
 package com.napier.devops;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Generates country population reports.
- * UC01: Requirements R01-R06.
+ * UC01 country reports (R01-R06). Every report lists countries from largest
+ * to smallest population. Countries without a capital are included, with a null capital.
  */
 public class CountryReports {
 
-    /** Database connection shared with App. */
+    private static final String BASE_SELECT =
+            "SELECT country.Code, country.Name, country.Continent, country.Region, "
+            + "country.Population, city.Name AS Capital "
+            + "FROM country LEFT JOIN city ON country.Capital = city.ID ";
+    private static final String ORDER_BY = "ORDER BY country.Population DESC ";
+
     private final Connection con;
 
     /**
-     * Columns required by the Country Report: Code, Name, Continent, Region, Population, Capital.
-     * LEFT JOIN keeps countries that have no capital (shown as N/A).
-     */
-    private static final String BASE_SELECT =
-            "SELECT country.Code, country.Name, country.Continent, country.Region, " +
-                    "       country.Population, city.Name AS Capital " +
-                    "FROM country " +
-                    "LEFT JOIN city ON country.Capital = city.ID ";
-
-    /**
-     * Uses the existing database connection.
+     * Creates the report runner.
      *
-     * @param con connection to the world database
+     * @param con open connection to the world database
      */
     public CountryReports(Connection con) {
         this.con = con;
     }
 
     /**
-     * R01: Gets all countries in the world, ordered by population from largest to smallest.
+     * R01: all countries in the world.
      *
-     * @return list of countries
+     * @return all countries, largest population first
      */
     public ArrayList<Country> getAllCountriesByPopulation() {
-        String sql = BASE_SELECT + "ORDER BY country.Population DESC";
-        return runQuery(sql);
+        return run(BASE_SELECT + ORDER_BY);
     }
 
     /**
-     * R02: Gets all countries in a continent, ordered by population from largest to smallest.
+     * R02: all countries in a continent.
      *
-     * @param continent name of the continent, e.g. "Asia"
-     * @return list of countries in the continent
+     * @param continent continent name, e.g. "Asia"
+     * @return countries in the continent, largest population first
      */
     public ArrayList<Country> getCountriesByContinent(String continent) {
-        String sql = BASE_SELECT +
-                "WHERE country.Continent = ? " +
-                "ORDER BY country.Population DESC";
-        return runQuery(sql, continent);
+        return run(BASE_SELECT + "WHERE country.Continent = ? " + ORDER_BY, continent);
     }
 
     /**
-     * R03: Gets all countries in a region, ordered by population from largest to smallest.
+     * R03: all countries in a region.
      *
-     * @param region name of the region, e.g. "Southeast Asia"
-     * @return list of countries in the region
+     * @param region region name, e.g. "Southeast Asia"
+     * @return countries in the region, largest population first
      */
     public ArrayList<Country> getCountriesByRegion(String region) {
-        String sql = BASE_SELECT +
-                "WHERE country.Region = ? " +
-                "ORDER BY country.Population DESC";
-        return runQuery(sql, region);
+        return run(BASE_SELECT + "WHERE country.Region = ? " + ORDER_BY, region);
     }
 
     /**
-     * R04: Gets the top N populated countries in the world.
+     * R04: the top N populated countries in the world.
      *
-     * @param n number of countries to return; must be greater than zero
-     * @return list of the top N countries, or an empty list if n is not positive
+     * @param n number of countries to return; must be positive
+     * @return the top N countries, or an empty list if n is not positive
      */
     public ArrayList<Country> getTopNCountriesWorld(int n) {
-        if (n <= 0) {
-            System.out.println("N must be greater than zero.");
+        if (!QueryRunner.isValidLimit(n)) {
             return new ArrayList<>();
         }
-        String sql = BASE_SELECT +
-                "ORDER BY country.Population DESC " +
-                "LIMIT ?";
-        return runQuery(sql, n);
+        return run(BASE_SELECT + ORDER_BY + "LIMIT ?", n);
     }
 
     /**
-     * R05: Gets the top N populated countries in a continent.
+     * R05: the top N populated countries in a continent.
      *
-     * @param continent name of the continent, e.g. "Europe"
-     * @param n         number of countries to return; must be greater than zero
-     * @return list of the top N countries, or an empty list if n is not positive
+     * @param continent continent name, e.g. "Europe"
+     * @param n         number of countries to return; must be positive
+     * @return the top N countries, or an empty list if n is not positive
      */
     public ArrayList<Country> getTopNCountriesContinent(String continent, int n) {
-        if (n <= 0) {
-            System.out.println("N must be greater than zero.");
+        if (!QueryRunner.isValidLimit(n)) {
             return new ArrayList<>();
         }
-        String sql = BASE_SELECT +
-                "WHERE country.Continent = ? " +
-                "ORDER BY country.Population DESC " +
-                "LIMIT ?";
-        return runQuery(sql, continent, n);
+        return run(BASE_SELECT + "WHERE country.Continent = ? " + ORDER_BY + "LIMIT ?",
+                continent, n);
     }
 
     /**
-     * R06: Gets the top N populated countries in a region.
+     * R06: the top N populated countries in a region.
      *
-     * @param region name of the region, e.g. "Western Europe"
-     * @param n      number of countries to return; must be greater than zero
-     * @return list of the top N countries, or an empty list if n is not positive
+     * @param region region name, e.g. "Western Europe"
+     * @param n      number of countries to return; must be positive
+     * @return the top N countries, or an empty list if n is not positive
      */
     public ArrayList<Country> getTopNCountriesRegion(String region, int n) {
-        if (n <= 0) {
-            System.out.println("N must be greater than zero.");
+        if (!QueryRunner.isValidLimit(n)) {
             return new ArrayList<>();
         }
-        String sql = BASE_SELECT +
-                "WHERE country.Region = ? " +
-                "ORDER BY country.Population DESC " +
-                "LIMIT ?";
-        return runQuery(sql, region, n);
+        return run(BASE_SELECT + "WHERE country.Region = ? " + ORDER_BY + "LIMIT ?",
+                region, n);
     }
 
-    /**
-     * Runs a country query with the given parameters and maps each row to a Country.
-     *
-     * @param sql    query to run, with ? placeholders
-     * @param params values for the placeholders, in order
-     * @return the countries found; empty if the query fails
-     */
-    private ArrayList<Country> runQuery(String sql, Object... params) {
-        ArrayList<Country> results = new ArrayList<>();
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-
-            for (int i = 0; i < params.length; i++) {
-                stmt.setObject(i + 1, params[i]);
-            }
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Country c = new Country();
-                    c.setCode(rs.getString("Code"));
-                    c.setName(rs.getString("Name"));
-                    c.setContinent(rs.getString("Continent"));
-                    c.setRegion(rs.getString("Region"));
-                    c.setPopulation(rs.getInt("Population"));
-                    c.setCapital(rs.getString("Capital"));
-                    results.add(c);
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Query failed: " + e.getMessage());
-        }
-        return results;
+    private ArrayList<Country> run(String sql, Object... params) {
+        return QueryRunner.query(con, sql, CountryReports::mapCountry, params);
     }
 
-    /**
-     * Prints countries as an aligned console table.
-     *
-     * @param countries countries to print; null or empty prints a message instead
-     */
-    public void printCountries(ArrayList<Country> countries) {
-        if (countries == null || countries.isEmpty()) {
-            System.out.println("No countries to display.");
-            return;
-        }
-
-        System.out.printf("%-5s %-40s %-15s %-25s %-12s %-30s%n",
-                "Code", "Name", "Continent", "Region", "Population", "Capital");
-        System.out.println("-".repeat(130));
-
-        for (Country c : countries) {
-            System.out.printf("%-5s %-40s %-15s %-25s %-12d %-30s%n",
-                    c.getCode(),
-                    c.getName(),
-                    c.getContinent(),
-                    c.getRegion(),
-                    c.getPopulation(),
-                    c.getCapital() == null ? "N/A" : c.getCapital());
-        }
-
-        System.out.println();
-        System.out.println("Total: " + countries.size() + " countries");
+    private static Country mapCountry(ResultSet rs) throws SQLException {
+        return new Country(
+                rs.getString("Code"),
+                rs.getString("Name"),
+                rs.getString("Continent"),
+                rs.getString("Region"),
+                rs.getInt("Population"),
+                rs.getString("Capital"));
     }
 }

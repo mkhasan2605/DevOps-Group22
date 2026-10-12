@@ -1,288 +1,112 @@
 package com.napier.devops;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Generates capital city population reports.
- * UC03: Requirements R17-R22.
+ * UC03 capital city reports (R17-R22). Every report lists capital cities from
+ * largest to smallest population. Countries without a capital are left out.
  */
 public class CapitalReports {
 
-    /** Database connection shared with App. */
+    private static final String BASE_SELECT =
+            "SELECT city.Name AS CapitalName, country.Name AS CountryName, city.Population "
+            + "FROM country JOIN city ON country.Capital = city.ID ";
+    private static final String ORDER_BY = "ORDER BY city.Population DESC ";
+
     private final Connection con;
 
     /**
-     * Uses the existing database connection.
+     * Creates the report runner.
      *
-     * @param con Connection to the World database
+     * @param con open connection to the world database
      */
     public CapitalReports(Connection con) {
         this.con = con;
     }
 
     /**
-     * R17: Gets all capital cities in the world,
-     * ordered by population from largest to smallest.
+     * R17: all capital cities in the world.
      *
-     * @return List of capital cities
+     * @return all capital cities, largest population first
      */
     public ArrayList<CapitalCity> getAllCapitalCities() {
-        ArrayList<CapitalCity> capitals = new ArrayList<>();
-
-        String sql = "SELECT city.Name AS CapitalName, " +
-                "country.Name AS CountryName, " +
-                "city.Population " +
-                "FROM country " +
-                "INNER JOIN city ON country.Capital = city.ID " +
-                "ORDER BY city.Population DESC";
-
-        try (PreparedStatement stmt = con.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                CapitalCity capital = new CapitalCity(
-                        rs.getString("CapitalName"),
-                        rs.getString("CountryName"),
-                        rs.getInt("Population")
-                );
-
-                capitals.add(capital);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error retrieving capital cities: " + e.getMessage());
-        }
-
-        return capitals;
+        return run(BASE_SELECT + ORDER_BY);
     }
 
     /**
-     * R18: Gets all capital cities in a specified continent,
-     * ordered by population from largest to smallest.
+     * R18: all capital cities in a continent.
      *
-     * @param continent Name of the continent
-     * @return List of capital cities in the continent
+     * @param continent continent name, e.g. "Asia"
+     * @return capital cities in the continent, largest population first
      */
     public ArrayList<CapitalCity> getCapitalCitiesByContinent(String continent) {
-        ArrayList<CapitalCity> capitals = new ArrayList<>();
-
-        String sql = "SELECT city.Name AS CapitalName, " +
-                "country.Name AS CountryName, " +
-                "city.Population " +
-                "FROM country " +
-                "INNER JOIN city ON country.Capital = city.ID " +
-                "WHERE country.Continent = ? " +
-                "ORDER BY city.Population DESC";
-
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, continent);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    CapitalCity capital = new CapitalCity(
-                            rs.getString("CapitalName"),
-                            rs.getString("CountryName"),
-                            rs.getInt("Population")
-                    );
-
-                    capitals.add(capital);
-                }
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error retrieving capital cities by continent: "
-                    + e.getMessage());
-        }
-
-        return capitals;
+        return run(BASE_SELECT + "WHERE country.Continent = ? " + ORDER_BY, continent);
     }
 
     /**
-     * R19: Gets all capital cities in a specified region,
-     * ordered by population from largest to smallest.
+     * R19: all capital cities in a region.
      *
-     * @param region Name of the region
-     * @return List of capital cities in the region
+     * @param region region name, e.g. "Southeast Asia"
+     * @return capital cities in the region, largest population first
      */
     public ArrayList<CapitalCity> getCapitalCitiesByRegion(String region) {
-        ArrayList<CapitalCity> capitals = new ArrayList<>();
-
-        String sql = "SELECT city.Name AS CapitalName, " +
-                "country.Name AS CountryName, " +
-                "city.Population " +
-                "FROM country " +
-                "INNER JOIN city ON country.Capital = city.ID " +
-                "WHERE country.Region = ? " +
-                "ORDER BY city.Population DESC";
-
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, region);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    CapitalCity capital = new CapitalCity(
-                            rs.getString("CapitalName"),
-                            rs.getString("CountryName"),
-                            rs.getInt("Population")
-                    );
-
-                    capitals.add(capital);
-                }
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error retrieving capital cities by region: "
-                    + e.getMessage());
-        }
-
-        return capitals;
+        return run(BASE_SELECT + "WHERE country.Region = ? " + ORDER_BY, region);
     }
 
     /**
-     * R20: Gets the top N capital cities in the world,
-     * ordered by population from largest to smallest.
+     * R20: the top N populated capital cities in the world.
      *
-     * @param n Number of capital cities to retrieve
-     * @return List of the top N capital cities
+     * @param n number of capital cities to return; must be positive
+     * @return the top N capital cities, or an empty list if n is not positive
      */
     public ArrayList<CapitalCity> getTopNCapitalCitiesWorld(int n) {
-        ArrayList<CapitalCity> capitals = new ArrayList<>();
-
-        if (n <= 0) {
-            System.out.println("N must be greater than zero.");
-            return capitals;
+        if (!QueryRunner.isValidLimit(n)) {
+            return new ArrayList<>();
         }
-
-        String sql = "SELECT city.Name AS CapitalName, " +
-                "country.Name AS CountryName, " +
-                "city.Population " +
-                "FROM country " +
-                "INNER JOIN city ON country.Capital = city.ID " +
-                "ORDER BY city.Population DESC " +
-                "LIMIT ?";
-
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setInt(1, n);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    CapitalCity capital = new CapitalCity(
-                            rs.getString("CapitalName"),
-                            rs.getString("CountryName"),
-                            rs.getInt("Population")
-                    );
-
-                    capitals.add(capital);
-                }
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error retrieving top N capital cities: "
-                    + e.getMessage());
-        }
-
-        return capitals;
+        return run(BASE_SELECT + ORDER_BY + "LIMIT ?", n);
     }
 
     /**
-     * R21: Gets the top N capital cities in a specified continent,
-     * ordered by population from largest to smallest.
+     * R21: the top N populated capital cities in a continent.
      *
-     * @param continent Name of the continent
-     * @param n Number of capital cities to retrieve
-     * @return List of the top N capital cities in the continent
+     * @param continent continent name, e.g. "Asia"
+     * @param n         number of capital cities to return; must be positive
+     * @return the top N capital cities, or an empty list if n is not positive
      */
     public ArrayList<CapitalCity> getTopNCapitalCitiesContinent(String continent, int n) {
-        ArrayList<CapitalCity> capitals = new ArrayList<>();
-
-        if (n <= 0) {
-            System.out.println("N must be greater than zero.");
-            return capitals;
+        if (!QueryRunner.isValidLimit(n)) {
+            return new ArrayList<>();
         }
-
-        String sql = "SELECT city.Name AS CapitalName, " +
-                "country.Name AS CountryName, " +
-                "city.Population " +
-                "FROM country " +
-                "INNER JOIN city ON country.Capital = city.ID " +
-                "WHERE country.Continent = ? " +
-                "ORDER BY city.Population DESC " +
-                "LIMIT ?";
-
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, continent);
-            stmt.setInt(2, n);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    CapitalCity capital = new CapitalCity(
-                            rs.getString("CapitalName"),
-                            rs.getString("CountryName"),
-                            rs.getInt("Population")
-                    );
-
-                    capitals.add(capital);
-                }
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error retrieving top N capital cities by continent: "
-                    + e.getMessage());
-        }
-
-        return capitals;
+        return run(BASE_SELECT + "WHERE country.Continent = ? " + ORDER_BY + "LIMIT ?",
+                continent, n);
     }
 
     /**
-     * R22: Gets the top N capital cities in a specified region,
-     * ordered by population from largest to smallest.
+     * R22: the top N populated capital cities in a region.
      *
-     * @param region Name of the region
-     * @param n Number of capital cities to retrieve
-     * @return List of the top N capital cities in the region
+     * @param region region name, e.g. "Southeast Asia"
+     * @param n      number of capital cities to return; must be positive
+     * @return the top N capital cities, or an empty list if n is not positive
      */
     public ArrayList<CapitalCity> getTopNCapitalCitiesRegion(String region, int n) {
-        ArrayList<CapitalCity> capitals = new ArrayList<>();
-
-        if (n <= 0) {
-            System.out.println("N must be greater than zero.");
-            return capitals;
+        if (!QueryRunner.isValidLimit(n)) {
+            return new ArrayList<>();
         }
+        return run(BASE_SELECT + "WHERE country.Region = ? " + ORDER_BY + "LIMIT ?",
+                region, n);
+    }
 
-        String sql = "SELECT city.Name AS CapitalName, " +
-                "country.Name AS CountryName, " +
-                "city.Population " +
-                "FROM country " +
-                "INNER JOIN city ON country.Capital = city.ID " +
-                "WHERE country.Region = ? " +
-                "ORDER BY city.Population DESC " +
-                "LIMIT ?";
+    private ArrayList<CapitalCity> run(String sql, Object... params) {
+        return QueryRunner.query(con, sql, CapitalReports::mapCapital, params);
+    }
 
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, region);
-            stmt.setInt(2, n);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    CapitalCity capital = new CapitalCity(
-                            rs.getString("CapitalName"),
-                            rs.getString("CountryName"),
-                            rs.getInt("Population")
-                    );
-
-                    capitals.add(capital);
-                }
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error retrieving top N capital cities by region: "
-                    + e.getMessage());
-        }
-
-        return capitals;
+    private static CapitalCity mapCapital(ResultSet rs) throws SQLException {
+        return new CapitalCity(
+                rs.getString("CapitalName"),
+                rs.getString("CountryName"),
+                rs.getInt("Population"));
     }
 }

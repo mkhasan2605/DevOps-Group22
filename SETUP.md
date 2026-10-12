@@ -2,8 +2,6 @@
 
 This guide explains how to prepare a development environment for the SET09803 DevOps Group 22 Population Information System, then verify the project step by step.
 
-> **Repository status note:** The instructions distinguish between general setup steps and project-specific commands that still need verification. Before relying on a command, confirm that the relevant file (`pom.xml`, `Dockerfile`, workflow, or database configuration) exists in the current repository and that the command passes. Do not invent database credentials or commit secrets.
-
 ## Contents
 
 1. [What you need](#1-what-you-need)
@@ -16,7 +14,7 @@ This guide explains how to prepare a development environment for the SET09803 De
 8. [Configure Maven and build the application](#8-configure-maven-and-build-the-application)
 9. [Run automated tests](#9-run-automated-tests)
 10. [Configure and verify the MySQL database](#10-configure-and-verify-the-mysql-database)
-11. [Build and test with Docker](#11-build-and-test-with-docker)
+11. [Run the application](#11-run-the-application)
 12. [Check GitHub Actions](#12-check-github-actions)
 13. [Use the team Git workflow](#13-use-the-team-git-workflow)
 14. [Troubleshooting](#14-troubleshooting)
@@ -31,8 +29,7 @@ Install or obtain access to:
 - **Java JDK 17** — the team's agreed Java version for the coursework.
 - **Git** — to clone the repository and work with branches.
 - **IntelliJ IDEA** — to open and develop the Java application.
-- **Docker Desktop** — for building/running the container once the project has a tested Docker configuration.
-- **The coursework MySQL population database** — use the access details and instructions supplied by the module.
+- **Docker Desktop** — runs the MySQL world database and the application containers.
 - **GitHub access** — you must be a collaborator/member with permission to access the Group 22 repository.
 
 Maven is normally configured in a Maven project through `pom.xml`; IntelliJ has Maven integration. You can use IntelliJ's bundled Maven support, or install Maven separately if you want to run `mvn` from PowerShell.
@@ -44,7 +41,6 @@ Maven is normally configured in a Maven project through `pom.xml`; IntelliJ has 
 3. IntelliJ IDEA
 4. Docker Desktop
 5. Repository clone and project checks
-6. Database access, once the module's connection instructions are available
 
 Use the installation links and versions recommended by the current module materials. Do not install an old Docker Desktop release solely because it was mentioned in an older lecture without checking the current module guidance and compatibility.
 
@@ -145,8 +141,6 @@ If Docker Desktop asks you to enable WSL 2 or another Windows feature, follow th
 
 **Success check:** Docker Desktop is running and `docker info` completes successfully.
 
-> Installing Docker does not mean the application is containerised yet. A working `Dockerfile` and any required database/network configuration must also exist and be tested before the project can be built and run in a container.
-
 ## 6. Clone and open the repository
 
 ### Option A — IntelliJ
@@ -203,205 +197,165 @@ The remote should point to the Group 22 repository. `git status` should show the
 
 ## 7. Check the project structure
 
-In IntelliJ, look at the Project panel and check whether the repository contains the files below. This is the intended Maven structure; some files may still need to be created by the team.
+In IntelliJ, check that the Project panel shows:
 
 ```text
 DevOps-Group22/
-├── .github/
-│   └── workflows/
-├── src/
-│   ├── main/
-│   │   └── java/
-│   └── test/
-│       └── java/
-├── .gitignore
-├── CODE_OF_CONDUCT.md
-├── Dockerfile
-├── LICENSE
-├── pom.xml
+├── .github/workflows/main.yml   # CI pipeline
+├── db/
+│   ├── Dockerfile               # MySQL 8.4 image that loads world.sql
+│   └── world.sql                # The world database
+├── docs/
+│   ├── screenshots/             # Report output used as requirement evidence
+│   └── use-cases/               # Use case descriptions and diagram
+├── src/main/java/com/napier/devops/   # Application source
+├── src/test/java/com/napier/devops/   # Tests
+├── docker-compose.yml           # Runs the db and app containers together
+├── Dockerfile                   # Application image: runs target/app.jar
+├── pom.xml                      # Maven build: Java 17, JUnit 5, MySQL driver
 ├── README.md
 └── SETUP.md
 ```
 
-What the main files/folders are for:
-
-- `pom.xml` — Maven project definition, dependencies, Java version and build/test plugins.
-- `src/main/java/` — application source code.
-- `src/test/java/` — automated tests.
-- `Dockerfile` — instructions for creating the application image.
-- `.github/workflows/` — GitHub Actions workflows for automated build and tests.
-- `README.md` — short project overview, requirement status and evidence.
-- `SETUP.md` — this detailed setup guide.
-
-**Important:** Do not create an empty `Dockerfile`, Maven configuration, or workflow just to make the tree look complete. Add these files with the team, then test them and update this guide to match the actual implementation.
+See the README for what each Java class does.
 
 ## 8. Configure Maven and build the application
 
-### 8.1 Confirm `pom.xml` exists
-
-The Maven commands below must be run from the directory containing `pom.xml`. In PowerShell:
-
-```powershell
-Get-ChildItem
-Test-Path .\pom.xml
-```
-
-`Test-Path` should return `True`. If it returns `False`, the Maven project has not yet been set up at that location. Do not run Maven build commands from a different folder and assume they test this project.
-
-### 8.2 Open the Maven project in IntelliJ
+### 8.1 Open the Maven project in IntelliJ
 
 1. Open the repository folder in IntelliJ.
 2. If IntelliJ prompts to load/import the Maven project, accept.
 3. Open the Maven tool window and check that the project is recognised.
-4. Check that the Maven importer uses JDK 17. Depending on the IntelliJ version, this may be under **Settings → Build, Execution, Deployment → Build Tools → Maven**.
+4. Check that the Maven importer uses JDK 17 (**Settings → Build, Execution, Deployment → Build Tools → Maven**).
 5. Wait for dependency downloads to finish.
 
-### 8.3 Build from the terminal
+### 8.2 Build the jar
 
-In the IntelliJ terminal or PowerShell at the repository root, run:
+From the repository root (the folder containing `pom.xml`), run:
 
 ```powershell
-mvn -version
 mvn clean package
 ```
 
-`mvn -version` should show Maven and the Java runtime it uses. Confirm the Java runtime is 17.
+If Maven is not on your PATH, run the `clean` and `package` lifecycle goals from IntelliJ's Maven tool window instead.
 
-If Maven is not installed on your PATH, use the Maven tool window in IntelliJ or install Maven following the official instructions. If the repository later includes a Maven Wrapper (`mvnw.cmd` and `.mvn/`), prefer the wrapper command documented by the team.
-
-**Success check:** `mvn clean package` ends with `BUILD SUCCESS` and produces build output under `target/`.
-
-If it fails, keep the full error output; do not treat the build as passed until the cause has been resolved.
+**Success check:** the build ends with `BUILD SUCCESS` and creates `target/app.jar`, a single jar that includes the MySQL driver.
 
 ## 9. Run automated tests
 
-### 9.1 Run tests locally
-
-From the directory containing `pom.xml`, run:
+### 9.1 Unit tests
 
 ```powershell
 mvn clean test
 ```
 
-Maven should compile the application and run tests configured in the project. A successful command normally ends with `BUILD SUCCESS`.
+This runs the unit tests (`*Test` classes) through Maven Surefire. They do not need a database. Results are written to `target/surefire-reports/`.
 
-### 9.2 Inspect the test results
+### 9.2 Integration tests
 
-- Review the test summary in the terminal.
-- Inspect `target/surefire-reports/` if the project uses Maven Surefire.
-- In IntelliJ, you can also run a test class or test method using the gutter run icon.
+`CapitalReportsIT` runs real queries against the world database on `localhost:33060`. Classes named `*IT` are **not** run by `mvn test` or `mvn package`, so run them from IntelliJ:
 
-**Success check:** Tests have actually executed, the test report shows the expected number of tests, and there are no unexpected failures. A successful build with zero tests is not evidence of test coverage.
+1. Start the database (see [10.1](#101-start-the-database)).
+2. Right-click `src/test/java/com/napier/devops/CapitalReportsIT.java` and choose **Run**.
 
-### 9.3 If tests fail
-
-1. Read the first meaningful error and the failing test name.
-2. Decide whether the issue is a compilation error, assertion failure, missing dependency, or database/configuration issue.
-3. Reproduce it locally.
-4. Fix the code or test, then rerun `mvn clean test`.
-5. Include the test in the PR and ensure the CI workflow runs it.
-
-The team should add tests for report logic and relevant edge cases. Integration tests that require MySQL must document how the test database is provided and must not depend on a developer's private machine configuration.
+**Success check:** the tests actually ran (the summary shows the expected number of tests) and none failed. A green build with zero tests is not evidence that anything was tested.
 
 ## 10. Configure and verify the MySQL database
 
-The application uses the MySQL population database supplied for the coursework. Use the host, port, database name, username, password and access method provided by the module. Those details are intentionally not included here because they have not been verified for this guide.
+The application uses the coursework `world` database (`db/world.sql`), run locally in Docker. No external database or VPN is needed.
 
-### 10.1 Obtain the official connection details
+| Setting  | Value                                                                  |
+|----------|------------------------------------------------------------------------|
+| Image    | MySQL 8.4, built from `db/Dockerfile`                                  |
+| Database | `world` (tables `city`, `country`, `countrylanguage`)                  |
+| Host     | `localhost:33060` from your machine; `db:3306` from the app container  |
+| User     | `root`                                                                 |
+| Password | `example` (set in `db/Dockerfile`)                                     |
 
-1. Read the current module instructions for accessing the population database.
-2. Confirm whether the database is accessed on the university network, through a VPN/SSH tunnel, or through a local database/container.
-3. Confirm the host, port, schema/database name and permitted credentials.
-4. Ask the module team if any detail is missing. Do not guess the hostname or reuse another student's credentials.
+These are local development credentials for a throwaway container, not real secrets. Never commit real passwords.
 
-### 10.2 Keep credentials out of Git
-
-- Never commit database passwords, tokens, private keys or other secrets.
-- Use the configuration method agreed by the team, such as environment variables or a local untracked configuration file.
-- Add any local secret/configuration file to `.gitignore`.
-- If the team uses environment variables, document the variable **names** and example placeholder values, not real secrets.
-
-Example placeholders only (these are not actual Group 22 settings):
-
-```text
-DB_HOST=<host supplied by the module>
-DB_PORT=<port supplied by the module>
-DB_NAME=<database name supplied by the module>
-DB_USER=<username supplied by the module>
-DB_PASSWORD=<password supplied securely>
-```
-
-The Java application must actually read the chosen configuration before these variables can be used; creating variables alone does not configure the application.
-
-### 10.3 Verify database connectivity
-
-Once the team has documented the supported connection method:
-
-1. Confirm the database host is reachable from your network.
-2. Connect using the approved database client or connection method.
-3. Run a simple read-only query against a known table, following the module's instructions.
-4. Run the application's database connectivity check or a database integration test, if implemented.
-5. Record the verified steps in this guide without exposing credentials.
-
-**Success check:** You can connect using your own authorised access and retrieve data from the supplied database. A successful Java compilation alone does not prove database connectivity.
-
-## 11. Build and test with Docker
-
-Only follow the image build/run commands after the repository contains a tested `Dockerfile`. The correct image name, JAR path, ports, environment variables and database networking depend on the actual implementation, so they must be confirmed in the project's files.
-
-### 11.1 Check Docker is running
+### 10.1 Start the database
 
 ```powershell
-docker info
+docker compose up -d db
 ```
 
-### 11.2 Check for a Dockerfile
-
-From the repository root:
+The first start takes about a minute while `world.sql` is imported. Check progress with:
 
 ```powershell
-Test-Path .\Dockerfile
+docker compose ps
 ```
 
-If the result is `False`, Docker packaging has not yet been added at that path. Do not try to build an image until the team has created and reviewed the Dockerfile.
+Wait until the `db` service shows `(healthy)`.
 
-### 11.3 Build the image
-
-Once the team has committed a valid Dockerfile, use the image name and command agreed by the project. A typical build command is:
+### 10.2 Verify the data
 
 ```powershell
-docker build -t group22-population .
+docker compose exec db mysql -uroot -pexample -e "SELECT COUNT(*) FROM world.city;"
 ```
 
-Run this only when the Dockerfile is ready. If the build fails, inspect the first failing build step and confirm the expected JAR name/path and Java base image.
+**Success check:** the query returns `4079`.
 
-### 11.4 Run the container
+### 10.3 Application database settings
 
-The correct `docker run` command depends on how the application receives database configuration and connects to MySQL. Use the exact command documented by the team after testing it. Do not put a real database password directly into a command that may be saved in shell history.
+The application takes the database location as its first argument and a start-up delay in milliseconds as its second:
 
-If a `docker-compose.yml` or `compose.yaml` is added, follow its documented service names and environment configuration.
+| How it runs           | Arguments               | Notes                                                        |
+|-----------------------|-------------------------|--------------------------------------------------------------|
+| IntelliJ, default     | none                    | Connects to `localhost:33060` with no delay                  |
+| IntelliJ, custom port | e.g. `localhost:3307 0` | Set under **Run → Edit Configurations → Program arguments**  |
+| Docker / CI           | `db:3306 10000`         | Set by the `ENTRYPOINT` in `Dockerfile`                      |
 
-### 11.5 Verify and clean up
+The username and password default to `root` / `example`. To use different credentials, set the `DB_USER` and `DB_PASSWORD` environment variables (in IntelliJ: **Run → Edit Configurations → Environment variables**).
 
-- Check container output for startup errors.
-- Confirm the application can reach the intended database from inside the container.
-- Run a representative report or integration check.
-- Stop/remove test containers and images only when they are no longer needed.
+## 11. Run the application
 
-**Success check:** The image builds, the container starts, and the required application operation works with the documented configuration. Merely seeing an image in Docker Desktop is not enough.
+### 11.1 From IntelliJ
+
+1. Start the database ([10.1](#101-start-the-database)).
+2. Run `src/main/java/com/napier/devops/App.java`.
+
+The app prints the city count, then each report (R01-R06, R12-R25, R27-R29) to the console. Reports R07-R11 (all cities) are written as text files to the `reports/` folder in the project root. That folder is in `.gitignore`, so the files are never committed.
+
+### 11.2 With Docker Compose
+
+Build the jar first, because the application image copies `target/app.jar`:
+
+```powershell
+mvn clean package
+docker compose up --build --exit-code-from app
+```
+
+Compose builds both images, waits until the database is healthy, then runs the app. The command exits when the app finishes, with the app's exit code: `0` if every report ran, `1` if the app could not reach the database or a report failed (the error is printed as `Report failed: ...`).
+
+### 11.3 Clean up
+
+```powershell
+docker compose down -v
+```
+
+`-v` also deletes the database volume, so the next start imports `world.sql` again from scratch.
+
+**Success check:** the app prints `Successfully connected`, `Cities in database: 4079`, and every report section, with no `Report failed` message.
 
 ## 12. Check GitHub Actions
 
-1. Open the Group 22 repository on GitHub.
-2. Select **Actions**.
-3. Open the latest workflow run for the branch you are checking.
-4. Inspect each job and step, including compilation and tests.
-5. Confirm the run corresponds to your latest commit.
-6. If it fails, open the failed step and read the logs. Fix the cause and push a new commit.
+The workflow in `.github/workflows/main.yml` runs on every push and pull request. It:
 
-The workflow should build the Maven project and run tests. Docker build/publish steps should be added only as required by the coursework and configured to use the actual Dockerfile. Do not report a green CI badge as proof that tests ran unless the workflow really runs them.
+1. Sets up Java 17 (Temurin).
+2. Runs `mvn -B package`, which compiles the code and runs the unit tests.
+3. Runs `docker compose up --build --exit-code-from app`, so the app runs every report against the real database.
+4. Runs `docker compose down -v` to clean up, even if an earlier step failed.
 
-**Success check:** The relevant workflow run for the pushed commit passes, and the workflow's steps show that the required build and test commands ran.
+The workflow does **not** run the `*IT` integration tests yet.
+
+To check a run:
+
+1. Open the repository on GitHub and select **Actions**.
+2. Open the run for your latest commit.
+3. If a step failed, open it and read the log. A failure in step 3 usually means a report query failed or the app could not connect.
+
+**Success check:** the run for your latest commit is green.
 
 ## 13. Use the team Git workflow
 
@@ -496,11 +450,14 @@ You can then start the next task from the updated branch.
 
 ### Database connection fails
 
-- Recheck the official host, port, schema and credentials.
-- Confirm you are on the required network or VPN, if applicable.
-- Check whether an SSH tunnel is required.
-- Never work around access restrictions or share another person's credentials.
-- Do not commit secrets while debugging.
+- Check the database container is running and healthy: `docker compose ps`.
+- On the first start, wait for the `world.sql` import to finish before running the app.
+- Check nothing else is using port `33060`. If you change the port, pass the new location to the app (see [10.3](#103-application-database-settings)).
+- If the data looks wrong or incomplete, reset it with `docker compose down -v` and start the database again.
+
+### Docker build fails with "target/app.jar not found"
+
+- Run `mvn clean package` first; the application image copies the jar built by Maven.
 
 ### Git says there are conflicts
 
@@ -514,8 +471,7 @@ You can then start the next task from the updated branch.
 
 - Open the failed GitHub Actions step.
 - Check differences in Java version, environment variables, database access and case-sensitive file paths.
-- Make sure the workflow runs the same relevant build/test commands.
-- Do not add credentials to workflow YAML. Use approved repository/environment secrets if the workflow requires secrets and the module permits that setup.
+- Reproduce the CI run locally with `mvn clean package` followed by `docker compose up --build --exit-code-from app`.
 
 ## 15. Setup checklist
 
@@ -527,12 +483,12 @@ Use this checklist after following the guide:
 - [ ] Docker Desktop installed and `docker info` succeeds.
 - [ ] Repository cloned from the Group 22 GitHub URL.
 - [ ] Local `develop` branch updated.
-- [ ] `pom.xml` exists and Maven recognises the project.
-- [ ] `mvn clean package` passes.
-- [ ] `mvn clean test` runs the expected tests and passes.
-- [ ] Official coursework MySQL access is configured and verified.
-- [ ] Docker image builds and container operation is tested, if Docker packaging has been implemented.
+- [ ] IntelliJ recognises the Maven project.
+- [ ] `mvn clean package` passes and creates `target/app.jar`.
+- [ ] The database container is healthy and `world.city` has 4079 rows.
+- [ ] `App` runs from IntelliJ against `localhost:33060`.
+- [ ] `docker compose up --build --exit-code-from app` exits with code 0.
 - [ ] GitHub Actions passes for the latest commit.
 - [ ] A feature branch and pull request have been used successfully.
 
-Tick an item only after you have performed and verified it. If a project file or capability is not implemented yet, leave the relevant item unticked and raise it with the team.
+Tick an item only after you have performed and verified it.

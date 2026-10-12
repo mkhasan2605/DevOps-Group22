@@ -1,98 +1,77 @@
 package com.napier.devops;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
- * Population reports for named places.
- * R27 - Continent population
- * R28 - Region population
- * R29 - Country population
+ * UC05 population of a named place: a continent (R27), region (R28) or country (R29).
+ * Continent and region totals are the sum of their countries' populations.
  */
 public class PlacePopulationReports {
 
-    /**
-     * R27: Returns the population of a continent.
-     */
-    public PlacePopulation getContinentPopulation(
-            Connection con, String continent) throws SQLException {
+    private final Connection con;
 
-        String sql = """
-                SELECT Continent AS Name,
-                       SUM(Population) AS Population
+    /**
+     * Creates the report runner.
+     *
+     * @param con open connection to the world database
+     */
+    public PlacePopulationReports(Connection con) {
+        this.con = con;
+    }
+
+    /**
+     * R27: the population of a continent.
+     *
+     * @param continent continent name, e.g. "Asia"
+     * @return the continent's population, or null if it is not found
+     */
+    public PlacePopulation getContinentPopulation(String continent) {
+        return run("""
+                SELECT Continent AS Name, SUM(Population) AS Population
                 FROM country
                 WHERE Continent = ?
                 GROUP BY Continent
-                """;
-
-        return getPopulation(con, sql, continent);
+                """, continent);
     }
 
     /**
-     * R28: Returns the population of a region.
+     * R28: the population of a region.
+     *
+     * @param region region name, e.g. "Southeast Asia"
+     * @return the region's population, or null if it is not found
      */
-    public PlacePopulation getRegionPopulation(
-            Connection con, String region) throws SQLException {
-
-        String sql = """
-                SELECT Region AS Name,
-                       SUM(Population) AS Population
+    public PlacePopulation getRegionPopulation(String region) {
+        return run("""
+                SELECT Region AS Name, SUM(Population) AS Population
                 FROM country
                 WHERE Region = ?
                 GROUP BY Region
-                """;
-
-        return getPopulation(con, sql, region);
+                """, region);
     }
 
     /**
-     * R29: Returns the population of a country.
+     * R29: the population of a country.
+     *
+     * @param country country name, e.g. "United Kingdom"
+     * @return the country's population, or null if it is not found
      */
-    public PlacePopulation getCountryPopulation(
-            Connection con, String country) throws SQLException {
-
-        String sql = """
+    public PlacePopulation getCountryPopulation(String country) {
+        return run("""
                 SELECT Name, Population
                 FROM country
                 WHERE Name = ?
-                """;
-
-        return getPopulation(con, sql, country);
+                """, country);
     }
 
-    /**
-     * Shared method for retrieving a named place's population.
-     */
-    private PlacePopulation getPopulation(
-            Connection con, String sql, String placeName)
-            throws SQLException {
-
-        if (con == null) {
-            throw new SQLException("Database connection is unavailable.");
-        }
-
+    private PlacePopulation run(String sql, String placeName) {
         if (placeName == null || placeName.isBlank()) {
-            throw new IllegalArgumentException(
-                    "Please enter a valid place name.");
+            System.out.println("Please enter a valid place name.");
+            return null;
         }
-
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-
-            stmt.setString(1, placeName.trim());
-
-            try (ResultSet rs = stmt.executeQuery()) {
-
-                if (rs.next()) {
-                    return new PlacePopulation(
-                            rs.getString("Name"),
-                            rs.getLong("Population")
-                    );
-                }
-            }
-        }
-
-        return null;
+        ArrayList<PlacePopulation> rows = QueryRunner.query(con, sql,
+                rs -> new PlacePopulation(rs.getString("Name"), rs.getLong("Population")),
+                placeName.trim());
+        return rows.isEmpty() ? null : rows.get(0);
     }
 }
