@@ -1,7 +1,9 @@
 # SET09803 DevOps Group 22 – Population Information System
-[![Build – master](https://github.com/mkhasan2605/DevOps-Group22/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/mkhasan2605/DevOps-Group22/actions/workflows/main.yml)
-[![Build – develop](https://github.com/mkhasan2605/DevOps-Group22/actions/workflows/main.yml/badge.svg?branch=develop)](https://github.com/mkhasan2605/DevOps-Group22/actions/workflows/main.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Build – master](https://img.shields.io/github/actions/workflow/status/mkhasan2605/DevOps-Group22/main.yml?branch=master&label=build%20%28master%29)](https://github.com/mkhasan2605/DevOps-Group22/actions/workflows/main.yml?query=branch%3Amaster)
+[![Build – develop](https://img.shields.io/github/actions/workflow/status/mkhasan2605/DevOps-Group22/main.yml?branch=develop&label=build%20%28develop%29)](https://github.com/mkhasan2605/DevOps-Group22/actions/workflows/main.yml?query=branch%3Adevelop)
+[![Release](https://img.shields.io/github/v/release/mkhasan2605/DevOps-Group22)](https://github.com/mkhasan2605/DevOps-Group22/releases)
+[![License](https://img.shields.io/github/license/mkhasan2605/DevOps-Group22)](LICENSE)
+<!-- Code coverage badge (master): added for Code Review 2 (JaCoCo + Codecov) -->
 
 ## Project Overview
 
@@ -102,6 +104,19 @@ text files to the `reports/` directory.
 
 See [SETUP.md](SETUP.md) for commands and further detail.
 
+## Use Cases
+
+The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an overview in the
+[use case diagram](docs/use-cases/Usecase_diagram.svg).
+
+| Use Case                                                                      | Requirements |
+|-------------------------------------------------------------------------------|--------------|
+| [UC01: Country Reports](docs/use-cases/UC01-country-reports.md)               | R01–R06      |
+| [UC02: City Reports](docs/use-cases/UC02-city-reports.md)                     | R12–R16      |
+| [UC03: Capital City Reports](docs/use-cases/UC03-capital-city-reports.md)     | R17–R22      |
+| [UC04: Population Breakdowns](docs/use-cases/UC04-population-breakdowns.md)   | R23–R25      |
+| [UC05: Population Information](docs/use-cases/UC05-population-information.md) | R27–R31      |
+
 ## Functional Requirements and Evidence
 
 **28 of 32 requirements met (87.50%).**
@@ -142,20 +157,6 @@ See [SETUP.md](SETUP.md) for commands and further detail.
 | R32 | Number and percentage of world population speaking Chinese, English, Hindi, Spanish and Arabic, ordered by number of speakers | No  | —          |
 
 Screenshots for the remaining requirements are still to be added.
-
-### Evidence
-
-#### R23 – Population in and out of cities by continent
-
-![R23 output](docs/screenshots/R-23.jpg)
-
-#### R24 – Population in and out of cities by region
-
-![R24 output](docs/screenshots/R-24.jpg)
-
-#### R25 – Population in and out of cities by country (first rows)
-
-![R25 output](docs/screenshots/R-25.jpg)
 
 ## Licence
 
