@@ -183,6 +183,13 @@ Screenshots for the remaining requirements are still to be added.
 - [R21 - Top N capital cities by continent](docs/screenshots/R-21.jpg)
 - [R22 - Top N capital cities by region](docs/screenshots/R-22.jpg)
 
+
+### UC05 Population Information – Screenshot Evidence (R27–R29)
+
+The following screenshot provides evidence of the population reports implemented for UC05.
+
+![UC05 Population Reports R27-R29](docs/screenshots/R27%20to%2029.png)
+
 ## Licence
 
 The group proposes the [MIT License](LICENSE), subject to review and agreement by all team members.
