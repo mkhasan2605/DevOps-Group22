@@ -88,8 +88,7 @@ docker compose up --build              # starts MySQL and runs the app against i
 ```
 
 To run from IntelliJ instead, start only the database (`docker compose up db`) and run `App`
-with no arguments; it connects to `localhost:33060`. The R07-R11 city reports are written as
-text files to the `reports/` directory.
+with no arguments; it connects to `localhost:33060`.
 
 ## Development Workflow
 
@@ -112,7 +111,7 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 | Use Case                                                                      | Requirements |
 |-------------------------------------------------------------------------------|--------------|
 | [UC01: Country Reports](docs/use-cases/UC01-country-reports.md)               | R01–R06      |
-| [UC02: City Reports](docs/use-cases/UC02-city-reports.md)                     | R12–R16      |
+| [UC02: City Reports](docs/use-cases/UC02-city-reports.md)                     | R07–R16      |
 | [UC03: Capital City Reports](docs/use-cases/UC03-capital-city-reports.md)     | R17–R22      |
 | [UC04: Population Breakdowns](docs/use-cases/UC04-population-breakdowns.md)   | R23–R25      |
 | [UC05: Population Information](docs/use-cases/UC05-population-information.md) | R27–R31      |
