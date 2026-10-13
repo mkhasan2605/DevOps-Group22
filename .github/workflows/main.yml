@@ -26,6 +26,14 @@ jobs:
       - name: Run app against database
         run: docker compose up --build --exit-code-from app
 
+      # R07-R11 list every city, so they are written to files rather than the log.
+      - name: Upload city reports (R07-R11)
+        uses: actions/upload-artifact@v7
+        with:
+          name: city-reports
+          path: reports/
+          if-no-files-found: error
+
       - name: Clean up
         if: always()
         run: docker compose down -v

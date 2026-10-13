@@ -88,8 +88,7 @@ docker compose up --build              # starts MySQL and runs the app against i
 ```
 
 To run from IntelliJ instead, start only the database (`docker compose up db`) and run `App`
-with no arguments; it connects to `localhost:33060`. The R07-R11 city reports are written as
-text files to the `reports/` directory.
+with no arguments; it connects to `localhost:33060`.
 
 ## Development Workflow
 
@@ -112,69 +111,55 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 | Use Case                                                                      | Requirements |
 |-------------------------------------------------------------------------------|--------------|
 | [UC01: Country Reports](docs/use-cases/UC01-country-reports.md)               | R01–R06      |
-| [UC02: City Reports](docs/use-cases/UC02-city-reports.md)                     | R12–R16      |
+| [UC02: City Reports](docs/use-cases/UC02-city-reports.md)                     | R07–R16      |
 | [UC03: Capital City Reports](docs/use-cases/UC03-capital-city-reports.md)     | R17–R22      |
 | [UC04: Population Breakdowns](docs/use-cases/UC04-population-breakdowns.md)   | R23–R25      |
 | [UC05: Population Information](docs/use-cases/UC05-population-information.md) | R27–R31      |
 
 ## Functional Requirements and Evidence
 
+> **Where to find the R07-R11 reports:** these reports list all 4,079 cities, so they are written
+> to text files instead of the console, and `reports/` is not committed to Git. Every CI run
+> uploads the five files: open [Actions](https://github.com/mkhasan2605/DevOps-Group22/actions),
+> select a run and download **city-reports** under *Artifacts*. The README screenshots show the
+> start of each file.
+
 **28 of 32 requirements met (87.50%).**
 
-| ID  | Requirement                                                                                                                   | Met | Screenshot                        |
-|-----|-------------------------------------------------------------------------------------------------------------------------------|-----|-----------------------------------|
-| R01 | All countries worldwide, ordered by population descending                                                                     | Yes | [View](docs/screenshots/R-01.jpg) |
-| R02 | All countries in a continent, ordered by population descending                                                                | Yes | [View](docs/screenshots/R-02.jpg) |
-| R03 | All countries in a region, ordered by population descending                                                                   | Yes | [View](docs/screenshots/R-03.jpg) |
-| R04 | Top N populated countries worldwide                                                                                           | Yes | —                                 |
-| R05 | Top N populated countries in a continent                                                                                      | Yes | —                                 |
-| R06 | Top N populated countries in a region                                                                                         | Yes | —                                 |
-| R07 | All cities worldwide, ordered by population descending                                                                        | Yes | —                                 |
-| R08 | All cities in a continent, ordered by population descending                                                                   | Yes | —                                 |
-| R09 | All cities in a region, ordered by population descending                                                                      | Yes | —                                 |
-| R10 | All cities in a country, ordered by population descending                                                                     | Yes | —                                 |
-| R11 | All cities in a district, ordered by population descending                                                                    | Yes | —                                 |
-| R12 | Top N populated cities worldwide                                                                                              | Yes | [View](docs/screenshots/R-12.jpg) |
-| R13 | Top N populated cities in a continent                                                                                         | Yes | [View](docs/screenshots/R-13.jpg) |
-| R14 | Top N populated cities in a region                                                                                            | Yes | [View](docs/screenshots/R-14.jpg) |
-| R15 | Top N populated cities in a country                                                                                           | Yes | [View](docs/screenshots/R-15.jpg) |
-| R16 | Top N populated cities in a district                                                                                          | Yes | [View](docs/screenshots/R-16.jpg) |
-
-| R17 | All capital cities worldwide, ordered by population descending                                                                | Yes | —                                 |
-| R18 | All capital cities in a continent, ordered by population descending                                                           | Yes | —                                 |
-| R19 | All capital cities in a region, ordered by population descending                                                              | Yes | —                                 |
-| R20 | Top N populated capital cities worldwide                                                                                      | Yes | —                                 |
-| R21 | Top N populated capital cities in a continent                                                                                 | Yes | —                                 |
-| R22 | Top N populated capital cities in a region                                                                                    | Yes | —                                 |
-| R23 | Population, city population and non-city population by continent                                                              | Yes | [View](docs/screenshots/R-23.jpg) |
-| R24 | Population, city population and non-city population by region                                                                 | Yes | [View](docs/screenshots/R-24.jpg) |
-| R25 | Population, city population and non-city population by country                                                                | Yes | [View](docs/screenshots/R-25.jpg) |
-| R26 | Population of the world                                                                                                       | No  | —                                 |
-| R27 | Population of a continent                                                                                                     | Yes | —                                 |
-| R28 | Population of a region                                                                                                        | Yes | —                                 |
-| R29 | Population of a country                                                                                                       | Yes | —                                 |
-| R30 | Population of a district                                                                                                      | No  | —                                 |
-| R31 | Population of a city                                                                                                          | No  | —                                 |
-| R32 | Number and percentage of world population speaking Chinese, English, Hindi, Spanish and Arabic, ordered by number of speakers | No  | —                                 |
-
-Screenshots for the remaining requirements are still to be added.
-
-
-### UC03 Capital City Reports - Screenshot Evidence (R17-R22)
-
-- [R17 - Capital cities worldwide](docs/screenshots/R-17.jpg)
-- [R18 - Capital cities by continent](docs/screenshots/R-18.jpg)
-- [R19 - Capital cities by region](docs/screenshots/R-19.jpg)
-- [R20 - Top N capital cities worldwide](docs/screenshots/R-20.jpg)
-- [R21 - Top N capital cities by continent](docs/screenshots/R-21.jpg)
-- [R22 - Top N capital cities by region](docs/screenshots/R-22.jpg)
-
-
-### UC05 Population Information – Screenshot Evidence (R27–R29)
-
-The following screenshot provides evidence of the population reports implemented for UC05.
-
-![UC05 Population Reports R27-R29](docs/screenshots/R27%20to%2029.png)
+| ID  | Requirement                                                                                                                   | Met | Screenshot                           |
+|-----|-------------------------------------------------------------------------------------------------------------------------------|-----|--------------------------------------|
+| R01 | All countries worldwide, ordered by population descending                                                                     | Yes | [View](docs/screenshots/R-01.jpg)    |
+| R02 | All countries in a continent, ordered by population descending                                                                | Yes | [View](docs/screenshots/R-02.jpg)    |
+| R03 | All countries in a region, ordered by population descending                                                                   | Yes | [View](docs/screenshots/R-03.jpg)    |
+| R04 | Top N populated countries worldwide                                                                                           | Yes | [View](docs/screenshots/R-04.png)    |
+| R05 | Top N populated countries in a continent                                                                                      | Yes | [View](docs/screenshots/R-05.png)    |
+| R06 | Top N populated countries in a region                                                                                         | Yes | [View](docs/screenshots/R-06.png)    |
+| R07 | All cities worldwide, ordered by population descending                                                                        | Yes | [View](docs/screenshots/R-07.png)    |
+| R08 | All cities in a continent, ordered by population descending                                                                   | Yes | [View](docs/screenshots/R-08.png)    |
+| R09 | All cities in a region, ordered by population descending                                                                      | Yes | [View](docs/screenshots/R-09.png)    |
+| R10 | All cities in a country, ordered by population descending                                                                     | Yes | [View](docs/screenshots/R-10.png)    |
+| R11 | All cities in a district, ordered by population descending                                                                    | Yes | [View](docs/screenshots/R-11.png)    |
+| R12 | Top N populated cities worldwide                                                                                              | Yes | [View](docs/screenshots/R-12.jpg)    |
+| R13 | Top N populated cities in a continent                                                                                         | Yes | [View](docs/screenshots/R-13.jpg)    |
+| R14 | Top N populated cities in a region                                                                                            | Yes | [View](docs/screenshots/R-14.jpg)    |
+| R15 | Top N populated cities in a country                                                                                           | Yes | [View](docs/screenshots/R-15.jpg)    |
+| R16 | Top N populated cities in a district                                                                                          | Yes | [View](docs/screenshots/R-16.jpg)    |
+| R17 | All capital cities worldwide, ordered by population descending                                                                | Yes | [View](docs/screenshots/R-17.jpg)    |
+| R18 | All capital cities in a continent, ordered by population descending                                                           | Yes | [View](docs/screenshots/R-18.jpg)    |
+| R19 | All capital cities in a region, ordered by population descending                                                              | Yes | [View](docs/screenshots/R-19.jpg)    |
+| R20 | Top N populated capital cities worldwide                                                                                      | Yes | [View](docs/screenshots/R-20.jpg)    |
+| R21 | Top N populated capital cities in a continent                                                                                 | Yes | [View](docs/screenshots/R-21.jpg)    |
+| R22 | Top N populated capital cities in a region                                                                                    | Yes | [View](docs/screenshots/R-22.jpg)    |
+| R23 | Population, city population and non-city population by continent                                                              | Yes | [View](docs/screenshots/R-23.jpg)    |
+| R24 | Population, city population and non-city population by region                                                                 | Yes | [View](docs/screenshots/R-24.jpg)    |
+| R25 | Population, city population and non-city population by country                                                                | Yes | [View](docs/screenshots/R-25.jpg)    |
+| R26 | Population of the world                                                                                                       | No  | —                                    |
+| R27 | Population of a continent                                                                                                     | Yes | [View](docs/screenshots/R-27-29.png) |
+| R28 | Population of a region                                                                                                        | Yes | [View](docs/screenshots/R-27-29.png) |
+| R29 | Population of a country                                                                                                       | Yes | [View](docs/screenshots/R-27-29.png) |
+| R30 | Population of a district                                                                                                      | No  | —                                    |
+| R31 | Population of a city                                                                                                          | No  | —                                    |
+| R32 | Number and percentage of world population speaking Chinese, English, Hindi, Spanish and Arabic, ordered by number of speakers | No  | —                                    |
 
 ## Licence
 
