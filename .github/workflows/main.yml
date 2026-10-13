@@ -1,0 +1,39 @@
+# CI: build the self-contained jar with Maven, then run the app in Docker against the world database.
+# The app's database location (db:3306) and start-up delay are set by the ENTRYPOINT in the Dockerfile.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v5
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build self-contained jar
+        run: mvn -B package --file pom.xml
+
+      - name: Run app against database
+        run: docker compose up --build --exit-code-from app
+
+      # R07-R11 list every city, so they are written to files rather than the log.
+      - name: Upload city reports (R07-R11)
+        uses: actions/upload-artifact@v7
+        with:
+          name: city-reports
+          path: reports/
+          if-no-files-found: error
+
+      - name: Clean up
+        if: always()
+        run: docker compose down -v

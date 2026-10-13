@@ -1,3 +1,13 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Maven
+target/
+
+# Text reports written by CityReports (R07-R11)
+reports/
+
 # Compiled class file
 *.class
 
