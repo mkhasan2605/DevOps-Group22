@@ -119,6 +119,12 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 
 ## Functional Requirements and Evidence
 
+> **Where to find the R07-R11 reports:** these reports list all 4,079 cities, so they are written
+> to text files instead of the console, and `reports/` is not committed to Git. Every CI run
+> uploads the five files: open [Actions](https://github.com/mkhasan2605/DevOps-Group22/actions),
+> select a run and download **city-reports** under *Artifacts*. The README screenshots show the
+> start of each file.
+
 **28 of 32 requirements met (87.50%).**
 
 | ID  | Requirement                                                                                                                   | Met | Screenshot                           |
