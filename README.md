@@ -166,6 +166,14 @@ Screenshots for the remaining requirements are still to be added.
 - [R04 - Top N countries in the world](docs/screenshots/R-04.jpg)
 - [R05 - Top N countries in a continent](docs/screenshots/R-05.jpg)
 - [R06 - Top N countries in a region](docs/screenshots/R-06.jpg)
+
+### UC02 City Reports - Screenshot Evidence (R07-R11)
+- [R07 - All Cities Worldwide](docs/screenshots/R-07.png)
+- [R08 - Cities by Continent](docs/screenshots/R-08.png)
+- [R09 - Cities by Region](docs/screenshots/R-09.png)
+- [R10 - Cities by Country](docs/screenshots/R-10.png)
+- [R11 - Cities by District](docs/screenshots/R-11.png)
+
 ### UC03 Capital City Reports - Screenshot Evidence (R17-R22)
 
 - [R17 - Capital cities worldwide](docs/screenshots/R-17.jpg)
