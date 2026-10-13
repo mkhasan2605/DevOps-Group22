@@ -16,3 +16,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    # Keep the R07-R11 report files after the container stops (CI uploads them as an artifact).
+    volumes:
+      - ./reports:/tmp/reports
