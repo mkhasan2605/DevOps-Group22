@@ -158,6 +158,15 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 
 Screenshots for the remaining requirements are still to be added.
 
+### UC03 Capital City Reports - Screenshot Evidence (R17-R22)
+
+- [R17 - Capital cities worldwide](docs/screenshots/R-17.jpg)
+- [R18 - Capital cities by continent](docs/screenshots/R-18.jpg)
+- [R19 - Capital cities by region](docs/screenshots/R-19.jpg)
+- [R20 - Top N capital cities worldwide](docs/screenshots/R-20.jpg)
+- [R21 - Top N capital cities by continent](docs/screenshots/R-21.jpg)
+- [R22 - Top N capital cities by region](docs/screenshots/R-22.jpg)
+
 ## Licence
 
 The group proposes the [MIT License](LICENSE), subject to review and agreement by all team members.
