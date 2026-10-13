@@ -328,6 +328,8 @@ docker compose up --build --exit-code-from app
 
 Compose builds both images, waits until the database is healthy, then runs the app. The command exits when the app finishes, with the app's exit code: `0` if every report ran, `1` if the app could not reach the database or a report failed (the error is printed as `Report failed: ...`).
 
+The R07-R11 report files are written to `reports/` in the project root, the same as when running from IntelliJ.
+
 ### 11.3 Clean up
 
 ```powershell
@@ -345,7 +347,8 @@ The workflow in `.github/workflows/main.yml` runs on every push and pull request
 1. Sets up Java 17 (Temurin).
 2. Runs `mvn -B package`, which compiles the code and runs the unit tests.
 3. Runs `docker compose up --build --exit-code-from app`, so the app runs every report against the real database.
-4. Runs `docker compose down -v` to clean up, even if an earlier step failed.
+4. Uploads the R07-R11 report files as the **city-reports** artifact. Download it from the run's summary page under *Artifacts*.
+5. Runs `docker compose down -v` to clean up, even if an earlier step failed.
 
 The workflow does **not** run the `*IT` integration tests yet.
 
