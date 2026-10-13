@@ -166,6 +166,14 @@ Screenshots for the remaining requirements are still to be added.
 - [R04 - Top N countries in the world](docs/screenshots/R-04.jpg)
 - [R05 - Top N countries in a continent](docs/screenshots/R-05.jpg)
 - [R06 - Top N countries in a region](docs/screenshots/R-06.jpg)
+### UC03 Capital City Reports - Screenshot Evidence (R17-R22)
+
+- [R17 - Capital cities worldwide](docs/screenshots/R-17.jpg)
+- [R18 - Capital cities by continent](docs/screenshots/R-18.jpg)
+- [R19 - Capital cities by region](docs/screenshots/R-19.jpg)
+- [R20 - Top N capital cities worldwide](docs/screenshots/R-20.jpg)
+- [R21 - Top N capital cities by continent](docs/screenshots/R-21.jpg)
+- [R22 - Top N capital cities by region](docs/screenshots/R-22.jpg)
 
 ## Licence
 
