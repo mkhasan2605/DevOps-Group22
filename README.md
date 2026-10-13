@@ -158,6 +158,14 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 
 Screenshots for the remaining requirements are still to be added.
 
+### UC01 Country Reports - Screenshot Evidence (R01-R06)
+
+- [R01 - All countries in the world](docs/screenshots/R-01.jpg)
+- [R02 - All countries in a continent](docs/screenshots/R-02.jpg)
+- [R03 - All countries in a region](docs/screenshots/R-03.jpg)
+- [R04 - Top N countries in the world](docs/screenshots/R-04.jpg)
+- [R05 - Top N countries in a continent](docs/screenshots/R-05.jpg)
+- [R06 - Top N countries in a region](docs/screenshots/R-06.jpg)
 ### UC03 Capital City Reports - Screenshot Evidence (R17-R22)
 
 - [R17 - Capital cities worldwide](docs/screenshots/R-17.jpg)
