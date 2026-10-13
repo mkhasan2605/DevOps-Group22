@@ -134,11 +134,12 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 | R09 | All cities in a region, ordered by population descending                                                                      | Yes | —                                 |
 | R10 | All cities in a country, ordered by population descending                                                                     | Yes | —                                 |
 | R11 | All cities in a district, ordered by population descending                                                                    | Yes | —                                 |
-| R12 | Top N populated cities worldwide                                                                                              | Yes | —                                 |
-| R13 | Top N populated cities in a continent                                                                                         | Yes | —                                 |
-| R14 | Top N populated cities in a region                                                                                            | Yes | —                                 |
-| R15 | Top N populated cities in a country                                                                                           | Yes | —                                 |
-| R16 | Top N populated cities in a district                                                                                          | Yes | —                                 |
+| R12 | Top N populated cities worldwide                                                                                              | Yes | [View](docs/screenshots/R-12.jpg) |
+| R13 | Top N populated cities in a continent                                                                                         | Yes | [View](docs/screenshots/R-13.jpg) |
+| R14 | Top N populated cities in a region                                                                                            | Yes | [View](docs/screenshots/R-14.jpg) |
+| R15 | Top N populated cities in a country                                                                                           | Yes | [View](docs/screenshots/R-15.jpg) |
+| R16 | Top N populated cities in a district                                                                                          | Yes | [View](docs/screenshots/R-16.jpg) |
+
 | R17 | All capital cities worldwide, ordered by population descending                                                                | Yes | —                                 |
 | R18 | All capital cities in a continent, ordered by population descending                                                           | Yes | —                                 |
 | R19 | All capital cities in a region, ordered by population descending                                                              | Yes | —                                 |
@@ -157,6 +158,16 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 | R32 | Number and percentage of world population speaking Chinese, English, Hindi, Spanish and Arabic, ordered by number of speakers | No  | —                                 |
 
 Screenshots for the remaining requirements are still to be added.
+
+### UC02 Top N City Reports - Screenshot Evidence (R12–R16)
+
+- [R12 - Top N populated cities in the world](docs/screenshots/R-12.jpg)
+- [R13 - Top N populated cities in a continent](docs/screenshots/R-13.jpg)
+- [R14 - Top N populated cities in a region](docs/screenshots/R-14.jpg)
+- [R15 - Top N populated cities in a country](docs/screenshots/R-15.jpg)
+- [R16 - Top N populated cities in a district](docs/screenshots/R-16.jpg)
+
+
 
 ### UC03 Capital City Reports - Screenshot Evidence (R17-R22)
 
