@@ -159,15 +159,6 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 
 Screenshots for the remaining requirements are still to be added.
 
-### UC02 Top N City Reports - Screenshot Evidence (R12–R16)
-
-- [R12 - Top N populated cities in the world](docs/screenshots/R-12.jpg)
-- [R13 - Top N populated cities in a continent](docs/screenshots/R-13.jpg)
-- [R14 - Top N populated cities in a region](docs/screenshots/R-14.jpg)
-- [R15 - Top N populated cities in a country](docs/screenshots/R-15.jpg)
-- [R16 - Top N populated cities in a district](docs/screenshots/R-16.jpg)
-
-
 
 ### UC03 Capital City Reports - Screenshot Evidence (R17-R22)
 
