@@ -2,12 +2,33 @@
 
 **Team Member:** Sandiisme  
 **Matriculation Number:** 40841071  
-**Requirements:** R27–R31  
+**Requirements:** R26–R31 (R26 added by Mohammad Hasan, 40805651)  
 **Functional Area:** Population of a Named Place
 
 Actor for all use cases: **Organisation analyst**
 
 Preconditions for all use cases: the world database is available and the application is running.
+
+---
+
+## Population of the World (R26) - 40805651
+
+---
+
+### UC-R26: View population of the world
+
+**Goal:** See the total population of the world.
+
+**Main success scenario:**
+1. The analyst selects the "population of the world" option.
+2. The system retrieves the population of every country.
+3. The system calculates the total population of the world.
+4. The system displays "World" and its total population.
+
+**Extensions:**
+- 2a. The database is unavailable: the system shows an error message.
+
+**Postcondition:** The analyst has seen the total population of the world.
 
 ---
 
