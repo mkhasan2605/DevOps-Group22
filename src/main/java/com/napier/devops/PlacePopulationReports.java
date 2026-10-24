@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  * UC05 population information: the population of the world (R26), a continent (R27),
- * region (R28), country (R29) or district (R30).
+ * region (R28), country (R29), district (R30) or city (R31).
  * World, continent and region totals are the sum of their countries' populations;
  * a district's total is the sum of its cities, the only district figures in the database.
  */
@@ -94,6 +94,25 @@ public class PlacePopulationReports {
                 WHERE city.District = ? AND country.Name = ?
                 GROUP BY city.District, country.Name
                 """, district, country);
+    }
+
+    /**
+     * R31: the population of a city.
+     * The country is needed because city names are not unique (e.g. Hamilton);
+     * if the country has two cities with the same name, the larger one is returned.
+     *
+     * @param city    city name, e.g. "Edinburgh"
+     * @param country name of the country the city is in, e.g. "United Kingdom"
+     * @return the city's population, named "City, Country", or null if it is not found
+     */
+    public PlacePopulation getCityPopulation(String city, String country) {
+        return run("""
+                SELECT CONCAT(city.Name, ', ', country.Name) AS Name, city.Population
+                FROM city JOIN country ON city.CountryCode = country.Code
+                WHERE city.Name = ? AND country.Name = ?
+                ORDER BY city.Population DESC
+                LIMIT 1
+                """, city, country);
     }
 
     /**
