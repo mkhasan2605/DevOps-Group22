@@ -67,7 +67,8 @@ DevOps-Group22/
 │   │   ├── CityReports.java        # UC02  R07-R16  (City)
 │   │   ├── CapitalReports.java     # UC03  R17-R22  (CapitalCity)
 │   │   ├── PopulationReports.java  # UC04  R23-R25  (PopulationReport)
-│   │   └── PlacePopulationReports.java  # UC05  R27-R29  (PlacePopulation)
+│   │   ├── PlacePopulationReports.java  # UC05  R26-R31  (PlacePopulation)
+│   │   └── LanguageReports.java    # UC06  R32      (LanguageReport)
 │   └── test/java/com/napier/devops/
 ├── docker-compose.yml
 ├── Dockerfile                      # Runs target/app.jar against the db service
@@ -114,7 +115,8 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 | [UC02: City Reports](docs/use-cases/UC02-city-reports.md)                     | R07–R16      |
 | [UC03: Capital City Reports](docs/use-cases/UC03-capital-city-reports.md)     | R17–R22      |
 | [UC04: Population Breakdowns](docs/use-cases/UC04-population-breakdowns.md)   | R23–R25      |
-| [UC05: Population Information](docs/use-cases/UC05-population-information.md) | R27–R31      |
+| [UC05: Population Information](docs/use-cases/UC05-population-information.md) | R26–R31      |
+| [UC06: Language Report](docs/use-cases/UC06-language-report.md)               | R32          |
 
 ## Functional Requirements and Evidence
 
