@@ -89,7 +89,25 @@ public class ReportPrinter {
     }
 
     /**
-     * Prints the population of a single named place (R27-R29).
+     * Prints the language report (R32).
+     *
+     * @param title heading printed above the table
+     * @param rows  rows to print; null or empty prints a message instead
+     */
+    public void printLanguages(String title, List<LanguageReport> rows) {
+        if (!printTitle(title, rows)) {
+            return;
+        }
+        System.out.printf("%-10s  %16s  %12s%n", "Language", "Speakers", "% of world");
+        for (LanguageReport r : rows) {
+            System.out.printf("%-10s  %,16d  %11.2f%%%n",
+                    r.getLanguage(), r.getSpeakers(), r.getWorldPercentage());
+        }
+        printTotal(rows.size());
+    }
+
+    /**
+     * Prints the population of a single place (R26-R31).
      *
      * @param title heading printed above the result
      * @param place the place to print; null prints a message instead
