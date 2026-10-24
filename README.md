@@ -101,6 +101,8 @@ with no arguments; it connects to `localhost:33060`.
 7. Request review and address comments. Merge only when the required approvals and checks pass.
 8. Follow the team's agreed release process for `release` and `master`. Do not commit directly to `master`.
 
+Found a bug? Report it with **Issues → New issue → Bug report**. The template asks for the steps to reproduce, the expected and actual results, and your environment, and adds the `bug` label.
+
 See [SETUP.md](SETUP.md) for commands and further detail.
 
 ## Use Cases
