@@ -423,6 +423,14 @@ git pull origin develop
 
 You can then start the next task from the updated branch.
 
+### 13.5 Report a bug
+
+1. On GitHub, open **Issues → New issue** and choose **Bug report**.
+2. Fill in the summary, steps to reproduce, expected result, actual result and environment.
+3. Submit it. The issue gets the `bug` label automatically.
+
+Fix the bug in a branch from `develop`, and put `Fixes #<bug issue number>` in the PR description so the issue closes when the PR is merged.
+
 ## 14. Troubleshooting
 
 ### `java` or `javac` is not recognised
