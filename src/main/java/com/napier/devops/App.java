@@ -73,6 +73,7 @@ public class App {
         runCapitalReports(printer);
         runPopulationReports(printer);
         runPlacePopulationReports(printer);
+        runLanguageReports(printer);
     }
 
     /** UC01 country reports, R01-R06 (Moe Swam Pyae, 40858561). */
@@ -139,15 +140,31 @@ public class App {
                 reports.byCountry());
     }
 
-    /** UC05 population of a named place, R27-R29 (Sandiisme, 40841071). */
+    /**
+     * UC05 population information: R27-R29 (Sandiisme, 40841071)
+     * and R26, R30, R31 (Mohammad Hasan, 40805651).
+     */
     private void runPlacePopulationReports(ReportPrinter printer) {
         PlacePopulationReports reports = new PlacePopulationReports(con);
+        printer.printPlacePopulation("R26 - Population of the world",
+                reports.getWorldPopulation());
         printer.printPlacePopulation("R27 - Population of Asia",
                 reports.getContinentPopulation("Asia"));
         printer.printPlacePopulation("R28 - Population of Southeast Asia",
                 reports.getRegionPopulation("Southeast Asia"));
         printer.printPlacePopulation("R29 - Population of the United Kingdom",
                 reports.getCountryPopulation("United Kingdom"));
+        printer.printPlacePopulation("R30 - Population of the England district",
+                reports.getDistrictPopulation("England", "United Kingdom"));
+        printer.printPlacePopulation("R31 - Population of Edinburgh",
+                reports.getCityPopulation("Edinburgh", "United Kingdom"));
+    }
+
+    /** UC06 language report, R32 (Mohammad Hasan, 40805651). */
+    private void runLanguageReports(ReportPrinter printer) {
+        LanguageReports reports = new LanguageReports(con);
+        printer.printLanguages("R32 - Speakers of Chinese, English, Hindi, Spanish and Arabic",
+                reports.getLanguageSpeakers());
     }
 
     /**
