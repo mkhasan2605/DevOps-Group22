@@ -18,7 +18,7 @@ The project is developed by Group 22 using Scrum and DevOps practices.
 
 ## Progress
 
-![Requirements met](https://img.shields.io/badge/requirements%20met-28%2F32%20%2887.5%25%29-brightgreen)
+![Requirements met](https://img.shields.io/badge/requirements%20met-32%2F32%20%28100%25%29-brightgreen)
 
 See [Functional Requirements and Evidence](#functional-requirements-and-evidence) for the full list.
 
@@ -126,7 +126,7 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 > select a run and download **city-reports** under *Artifacts*. The README screenshots show the
 > start of each file.
 
-**28 of 32 requirements met (87.50%).**
+**32 of 32 requirements met (100%).**
 
 | ID  | Requirement                                                                                                                   | Met | Screenshot                           |
 |-----|-------------------------------------------------------------------------------------------------------------------------------|-----|--------------------------------------|
@@ -155,13 +155,13 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 | R23 | Population, city population and non-city population by continent                                                              | Yes | [View](docs/screenshots/R-23.jpg)    |
 | R24 | Population, city population and non-city population by region                                                                 | Yes | [View](docs/screenshots/R-24.jpg)    |
 | R25 | Population, city population and non-city population by country                                                                | Yes | [View](docs/screenshots/R-25.jpg)    |
-| R26 | Population of the world                                                                                                       | No  | —                                    |
+| R26 | Population of the world                                                                                                       | Yes | [View](docs/screenshots/R-26.jpg)    |
 | R27 | Population of a continent                                                                                                     | Yes | [View](docs/screenshots/R-27-29.png) |
 | R28 | Population of a region                                                                                                        | Yes | [View](docs/screenshots/R-27-29.png) |
 | R29 | Population of a country                                                                                                       | Yes | [View](docs/screenshots/R-27-29.png) |
-| R30 | Population of a district                                                                                                      | No  | —                                    |
-| R31 | Population of a city                                                                                                          | No  | —                                    |
-| R32 | Number and percentage of world population speaking Chinese, English, Hindi, Spanish and Arabic, ordered by number of speakers | No  | —                                    |
+| R30 | Population of a district                                                                                                      | Yes | [View](docs/screenshots/R-30.jpg)    |
+| R31 | Population of a city                                                                                                          | Yes | [View](docs/screenshots/R-31.jpg)    |
+| R32 | Number and percentage of world population speaking Chinese, English, Hindi, Spanish and Arabic, ordered by number of speakers | Yes | [View](docs/screenshots/R-32.jpg)    |
 
 ## Licence
 
