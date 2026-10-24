@@ -4,8 +4,9 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
- * UC05 population of a named place: a continent (R27), region (R28) or country (R29).
- * Continent and region totals are the sum of their countries' populations.
+ * UC05 population information: the population of the world (R26), a continent (R27),
+ * region (R28) or country (R29).
+ * World, continent and region totals are the sum of their countries' populations.
  */
 public class PlacePopulationReports {
 
@@ -18,6 +19,18 @@ public class PlacePopulationReports {
      */
     public PlacePopulationReports(Connection con) {
         this.con = con;
+    }
+
+    /**
+     * R26: the population of the world.
+     *
+     * @return the world's population, named "World"
+     */
+    public PlacePopulation getWorldPopulation() {
+        ArrayList<PlacePopulation> rows = QueryRunner.query(con,
+                "SELECT 'World' AS Name, SUM(Population) AS Population FROM country",
+                rs -> new PlacePopulation(rs.getString("Name"), rs.getLong("Population")));
+        return rows.get(0);
     }
 
     /**
