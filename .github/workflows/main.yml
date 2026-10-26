@@ -1,4 +1,5 @@
-# CI: build the self-contained jar with Maven, then run the app in Docker against the world database.
+# CI: start the world database, build the jar and run unit and integration tests with Maven,
+# then run the app in Docker against the database.
 # The app's database location (db:3306) and start-up delay are set by the ENTRYPOINT in the Dockerfile.
 name: CI
 
@@ -20,8 +21,12 @@ jobs:
           java-version: '17'
           cache: maven
 
-      - name: Build self-contained jar
-        run: mvn -B package --file pom.xml
+      # Integration tests (*IT) connect to the database on localhost:33060.
+      - name: Start database
+        run: docker compose up -d --wait db
+
+      - name: Build jar and run unit and integration tests
+        run: mvn -B verify --file pom.xml
 
       - name: Run app against database
         run: docker compose up --build --exit-code-from app

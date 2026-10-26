@@ -253,10 +253,15 @@ This runs the unit tests (`*Test` classes) through Maven Surefire. They do not n
 
 ### 9.2 Integration tests
 
-`CapitalReportsIT` runs real queries against the world database on `localhost:33060`. Classes named `*IT` are **not** run by `mvn test` or `mvn package`, so run them from IntelliJ:
+Integration tests are classes named `*IT` (e.g. `CapitalReportsIT`). They run real queries against the world database on `localhost:33060`, so start the database first (see [10.1](#101-start-the-database)), then run:
 
-1. Start the database (see [10.1](#101-start-the-database)).
-2. Right-click `src/test/java/com/napier/devops/CapitalReportsIT.java` and choose **Run**.
+```powershell
+mvn clean verify
+```
+
+`mvn verify` runs the unit tests (Surefire) and then the integration tests (Maven Failsafe). `mvn test` and `mvn package` do not run integration tests, so they work without a database. Integration test results are written to `target/failsafe-reports/`. You can also run one class from IntelliJ: right-click it and choose **Run**.
+
+New integration test classes should `extend DatabaseIT`, which opens one connection before the class runs and closes it afterwards; use its `con` field. To connect somewhere else, set the `DB_LOCATION` (default `localhost:33060`), `DB_USER` and `DB_PASSWORD` environment variables.
 
 **Success check:** the tests actually ran (the summary shows the expected number of tests) and none failed. A green build with zero tests is not evidence that anything was tested.
 
@@ -345,18 +350,17 @@ docker compose down -v
 The workflow in `.github/workflows/main.yml` runs on every push and pull request. It:
 
 1. Sets up Java 17 (Temurin).
-2. Runs `mvn -B package`, which compiles the code and runs the unit tests.
-3. Runs `docker compose up --build --exit-code-from app`, so the app runs every report against the real database.
-4. Uploads the R07-R11 report files as the **city-reports** artifact. Download it from the run's summary page under *Artifacts*.
-5. Runs `docker compose down -v` to clean up, even if an earlier step failed.
-
-The workflow does **not** run the `*IT` integration tests yet.
+2. Starts the world database with `docker compose up -d --wait db` and waits until it is healthy.
+3. Runs `mvn -B verify`, which builds the jar and runs the unit tests and the `*IT` integration tests against the database.
+4. Runs `docker compose up --build --exit-code-from app`, so the app runs every report against the real database.
+5. Uploads the R07-R11 report files as the **city-reports** artifact. Download it from the run's summary page under *Artifacts*.
+6. Runs `docker compose down -v` to clean up, even if an earlier step failed.
 
 To check a run:
 
 1. Open the repository on GitHub and select **Actions**.
 2. Open the run for your latest commit.
-3. If a step failed, open it and read the log. A failure in step 3 usually means a report query failed or the app could not connect.
+3. If a step failed, open it and read the log. A failure in step 3 means a test failed; a failure in step 4 usually means a report query failed or the app could not connect.
 
 **Success check:** the run for your latest commit is green.
 

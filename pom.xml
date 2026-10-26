@@ -40,6 +40,21 @@
                 <version>3.5.3</version>
             </plugin>
 
+            <!-- Run *IT integration tests in "mvn verify". They need the database: docker compose up -d db -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Skip the default thin jar: no MySQL driver inside and an ugly name -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
