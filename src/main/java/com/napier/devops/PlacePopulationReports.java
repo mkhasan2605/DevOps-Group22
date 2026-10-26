@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
- * UC05 population of a named place: a continent (R27), region (R28) or country (R29).
- * Continent and region totals are the sum of their countries' populations.
+ * UC05 population information: the population of the world (R26), a continent (R27),
+ * region (R28), country (R29), district (R30) or city (R31).
+ * World, continent and region totals are the sum of their countries' populations;
+ * a district's total is the sum of its cities, the only district figures in the database.
  */
 public class PlacePopulationReports {
 
@@ -18,6 +20,18 @@ public class PlacePopulationReports {
      */
     public PlacePopulationReports(Connection con) {
         this.con = con;
+    }
+
+    /**
+     * R26: the population of the world.
+     *
+     * @return the world's population, named "World"
+     */
+    public PlacePopulation getWorldPopulation() {
+        ArrayList<PlacePopulation> rows = QueryRunner.query(con,
+                "SELECT 'World' AS Name, SUM(Population) AS Population FROM country",
+                rs -> new PlacePopulation(rs.getString("Name"), rs.getLong("Population")));
+        return rows.get(0);
     }
 
     /**
@@ -64,14 +78,60 @@ public class PlacePopulationReports {
                 """, country);
     }
 
-    private PlacePopulation run(String sql, String placeName) {
-        if (placeName == null || placeName.isBlank()) {
-            System.out.println("Please enter a valid place name.");
-            return null;
+    /**
+     * R30: the population of a district, as the total of its cities.
+     * The country is needed because district names are not unique.
+     *
+     * @param district district name, e.g. "England"
+     * @param country  name of the country the district is in, e.g. "United Kingdom"
+     * @return the district's population, named "District, Country", or null if it is not found
+     */
+    public PlacePopulation getDistrictPopulation(String district, String country) {
+        return run("""
+                SELECT CONCAT(city.District, ', ', country.Name) AS Name,
+                       SUM(city.Population) AS Population
+                FROM city JOIN country ON city.CountryCode = country.Code
+                WHERE city.District = ? AND country.Name = ?
+                GROUP BY city.District, country.Name
+                """, district, country);
+    }
+
+    /**
+     * R31: the population of a city.
+     * The country is needed because city names are not unique (e.g. Hamilton);
+     * if the country has two cities with the same name, the larger one is returned.
+     *
+     * @param city    city name, e.g. "Edinburgh"
+     * @param country name of the country the city is in, e.g. "United Kingdom"
+     * @return the city's population, named "City, Country", or null if it is not found
+     */
+    public PlacePopulation getCityPopulation(String city, String country) {
+        return run("""
+                SELECT CONCAT(city.Name, ', ', country.Name) AS Name, city.Population
+                FROM city JOIN country ON city.CountryCode = country.Code
+                WHERE city.Name = ? AND country.Name = ?
+                ORDER BY city.Population DESC
+                LIMIT 1
+                """, city, country);
+    }
+
+    /**
+     * Runs a single-row population query for the given place names.
+     *
+     * @return the place, or null if a name is missing or nothing matches
+     */
+    private PlacePopulation run(String sql, String... placeNames) {
+        Object[] params = new Object[placeNames.length];
+        for (int i = 0; i < placeNames.length; i++) {
+            if (placeNames[i] == null || placeNames[i].isBlank()) {
+                System.out.println("Please enter a valid place name.");
+                return null;
+            }
+            params[i] = placeNames[i].trim();
         }
         ArrayList<PlacePopulation> rows = QueryRunner.query(con, sql,
                 rs -> new PlacePopulation(rs.getString("Name"), rs.getLong("Population")),
-                placeName.trim());
+                params);
         return rows.isEmpty() ? null : rows.get(0);
     }
 }

@@ -18,7 +18,7 @@ The project is developed by Group 22 using Scrum and DevOps practices.
 
 ## Progress
 
-![Requirements met](https://img.shields.io/badge/requirements%20met-28%2F32%20%2887.5%25%29-brightgreen)
+![Requirements met](https://img.shields.io/badge/requirements%20met-32%2F32%20%28100%25%29-brightgreen)
 
 See [Functional Requirements and Evidence](#functional-requirements-and-evidence) for the full list.
 
@@ -67,7 +67,8 @@ DevOps-Group22/
 │   │   ├── CityReports.java        # UC02  R07-R16  (City)
 │   │   ├── CapitalReports.java     # UC03  R17-R22  (CapitalCity)
 │   │   ├── PopulationReports.java  # UC04  R23-R25  (PopulationReport)
-│   │   └── PlacePopulationReports.java  # UC05  R27-R29  (PlacePopulation)
+│   │   ├── PlacePopulationReports.java  # UC05  R26-R31  (PlacePopulation)
+│   │   └── LanguageReports.java    # UC06  R32      (LanguageReport)
 │   └── test/java/com/napier/devops/
 ├── docker-compose.yml
 ├── Dockerfile                      # Runs target/app.jar against the db service
@@ -114,7 +115,8 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 | [UC02: City Reports](docs/use-cases/UC02-city-reports.md)                     | R07–R16      |
 | [UC03: Capital City Reports](docs/use-cases/UC03-capital-city-reports.md)     | R17–R22      |
 | [UC04: Population Breakdowns](docs/use-cases/UC04-population-breakdowns.md)   | R23–R25      |
-| [UC05: Population Information](docs/use-cases/UC05-population-information.md) | R27–R31      |
+| [UC05: Population Information](docs/use-cases/UC05-population-information.md) | R26–R31      |
+| [UC06: Language Report](docs/use-cases/UC06-language-report.md)               | R32          |
 
 ## Functional Requirements and Evidence
 
@@ -124,7 +126,7 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 > select a run and download **city-reports** under *Artifacts*. The README screenshots show the
 > start of each file.
 
-**28 of 32 requirements met (87.50%).**
+**32 of 32 requirements met (100%).**
 
 | ID  | Requirement                                                                                                                   | Met | Screenshot                           |
 |-----|-------------------------------------------------------------------------------------------------------------------------------|-----|--------------------------------------|
@@ -153,13 +155,13 @@ The use case descriptions are in [`docs/use-cases`](docs/use-cases), with an ove
 | R23 | Population, city population and non-city population by continent                                                              | Yes | [View](docs/screenshots/R-23.jpg)    |
 | R24 | Population, city population and non-city population by region                                                                 | Yes | [View](docs/screenshots/R-24.jpg)    |
 | R25 | Population, city population and non-city population by country                                                                | Yes | [View](docs/screenshots/R-25.jpg)    |
-| R26 | Population of the world                                                                                                       | No  | —                                    |
+| R26 | Population of the world                                                                                                       | Yes | [View](docs/screenshots/R-26.jpg)    |
 | R27 | Population of a continent                                                                                                     | Yes | [View](docs/screenshots/R-27-29.png) |
 | R28 | Population of a region                                                                                                        | Yes | [View](docs/screenshots/R-27-29.png) |
 | R29 | Population of a country                                                                                                       | Yes | [View](docs/screenshots/R-27-29.png) |
-| R30 | Population of a district                                                                                                      | No  | —                                    |
-| R31 | Population of a city                                                                                                          | No  | —                                    |
-| R32 | Number and percentage of world population speaking Chinese, English, Hindi, Spanish and Arabic, ordered by number of speakers | No  | —                                    |
+| R30 | Population of a district                                                                                                      | Yes | [View](docs/screenshots/R-30.jpg)    |
+| R31 | Population of a city                                                                                                          | Yes | [View](docs/screenshots/R-31.jpg)    |
+| R32 | Number and percentage of world population speaking Chinese, English, Hindi, Spanish and Arabic, ordered by number of speakers | Yes | [View](docs/screenshots/R-32.jpg)    |
 
 ## Licence
 
