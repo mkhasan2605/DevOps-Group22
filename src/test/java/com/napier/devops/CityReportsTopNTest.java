@@ -14,6 +14,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class CityReportsTopNTest {
 
-    // Tomorrow's tests will be added here, one at a time.
+    // R12: top N cities in the world
+    @Test
+    void topNCitiesWorldReturnsEmptyListForZeroAndNegative() {
+        CityReports reports = new CityReports(null);
+
+        ArrayList<City> zeroResult = reports.getTopNCitiesWorld(0);
+        ArrayList<City> negativeResult = reports.getTopNCitiesWorld(-1);
+
+        assertTrue(zeroResult.isEmpty());
+        assertTrue(negativeResult.isEmpty());
+    }
 
 }
