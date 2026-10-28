@@ -36,4 +36,27 @@ public class CityReportsTopNTest {
         assertTrue(zeroResult.isEmpty());
         assertTrue(negativeResult.isEmpty());
     }
+    // R14: top N cities in a region
+    @Test
+    void topNCitiesRegionReturnsEmptyListForZeroAndNegative() {
+        CityReports reports = new CityReports(null);
+
+        ArrayList<City> zeroResult = reports.getTopNCitiesRegion("Western Europe", 0);
+        ArrayList<City> negativeResult = reports.getTopNCitiesRegion("Western Europe", -1);
+
+        assertTrue(zeroResult.isEmpty());
+        assertTrue(negativeResult.isEmpty());
+    }
+
+    // R15: top N cities in a country
+    @Test
+    void topNCitiesCountryReturnsEmptyListForZeroAndNegative() {
+        CityReports reports = new CityReports(null);
+
+        ArrayList<City> zeroResult = reports.getTopNCitiesCountry("United Kingdom", 0);
+        ArrayList<City> negativeResult = reports.getTopNCitiesCountry("United Kingdom", -1);
+
+        assertTrue(zeroResult.isEmpty());
+        assertTrue(negativeResult.isEmpty());
+    }
 }
