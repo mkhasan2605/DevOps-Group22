@@ -25,5 +25,15 @@ public class CityReportsTopNTest {
         assertTrue(zeroResult.isEmpty());
         assertTrue(negativeResult.isEmpty());
     }
+    // R13: top N cities in a continent
+    @Test
+    void topNCitiesContinentReturnsEmptyListForZeroAndNegative() {
+        CityReports reports = new CityReports(null);
 
+        ArrayList<City> zeroResult = reports.getTopNCitiesContinent("Asia", 0);
+        ArrayList<City> negativeResult = reports.getTopNCitiesContinent("Asia", -1);
+
+        assertTrue(zeroResult.isEmpty());
+        assertTrue(negativeResult.isEmpty());
+    }
 }
