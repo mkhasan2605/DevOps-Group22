@@ -58,5 +58,16 @@ public class CityReportsTopNTest {
 
         assertTrue(zeroResult.isEmpty());
         assertTrue(negativeResult.isEmpty());
+    }     // R16: top N cities in a district
+    @Test
+    void topNCitiesDistrictReturnsEmptyListForZeroAndNegative() {
+        CityReports reports = new CityReports(null);
+
+        ArrayList<City> zeroResult = reports.getTopNCitiesDistrict("England", 0);
+        ArrayList<City> negativeResult = reports.getTopNCitiesDistrict("England", -1);
+
+        assertTrue(zeroResult.isEmpty());
+        assertTrue(negativeResult.isEmpty());
     }
+
 }
