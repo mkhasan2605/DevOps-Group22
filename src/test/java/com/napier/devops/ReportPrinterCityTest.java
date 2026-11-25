@@ -21,4 +21,14 @@ public class ReportPrinterCityTest {
         ReportPrinter printer = new ReportPrinter();
         assertDoesNotThrow(() -> printer.printCities("Test", List.of()));
     }
+
+    @Test
+    void printCitiesWithValidListDoesNotThrow() {
+        ReportPrinter printer = new ReportPrinter();
+        List<City> cities = List.of(
+                new City("London", "United Kingdom", "England", 7285000),
+                new City("Tokyo", "Japan", "Tokyo-to", 7980230)
+        );
+        assertDoesNotThrow(() -> printer.printCities("Test", cities));
+    }
 }
