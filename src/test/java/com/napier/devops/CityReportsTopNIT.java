@@ -65,4 +65,28 @@ public class CityReportsTopNIT extends DatabaseIT {
             assertTrue(cities.get(i).getPopulation() >= cities.get(i + 1).getPopulation());
         }
     }
+
+    // R16: top N cities in a district
+    @Test
+    void topNCitiesDistrictReturnsLargestCities() {
+        CityReports reports = new CityReports(con);
+
+        ArrayList<City> cities = reports.getTopNCitiesDistrict("England", 5);
+
+        assertEquals(5, cities.size());
+        assertEquals("London", cities.get(0).getName());
+        for (int i = 0; i < cities.size() - 1; i++) {
+            assertTrue(cities.get(i).getPopulation() >= cities.get(i + 1).getPopulation());
+        }
+    }
+
+    // Unknown country returns empty list
+    @Test
+    void topNCitiesUnknownCountryReturnsEmptyList() {
+        CityReports reports = new CityReports(con);
+
+        ArrayList<City> cities = reports.getTopNCitiesCountry("Atlantis", 5);
+
+        assertTrue(cities.isEmpty());
+    }
 }
