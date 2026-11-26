@@ -1,5 +1,7 @@
 package com.napier.devops;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,5 +42,23 @@ class CountryReportsTest {
     void topCountriesRegionReturnsEmptyForNegativeLimit() {
         CountryReports reports = new CountryReports(null);
         assertTrue(reports.getTopNCountriesRegion("Southeast Asia", -1).isEmpty());
+    }
+
+    @Test
+    void getAllCountriesByPopulationWithNullConnectionThrows() {
+        CountryReports reports = new CountryReports(null);
+        assertThrows(ReportException.class, () -> reports.getAllCountriesByPopulation());
+    }
+
+    @Test
+    void printCountriesWithNullDoesNotThrow() {
+        ReportPrinter printer = new ReportPrinter();
+        assertDoesNotThrow(() -> printer.printCountries("Test", null));
+    }
+
+    @Test
+    void printCountriesWithEmptyListDoesNotThrow() {
+        ReportPrinter printer = new ReportPrinter();
+        assertDoesNotThrow(() -> printer.printCountries("Test", new ArrayList<>()));
     }
 }
