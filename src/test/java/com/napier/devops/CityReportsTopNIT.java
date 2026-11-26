@@ -19,9 +19,9 @@ public class CityReportsTopNIT extends DatabaseIT {
         ArrayList<City> cities = reports.getTopNCitiesWorld(5);
 
         assertEquals(5, cities.size());
-        assertEquals("Mumbai (Bombay)", cities.get(0).name());
+        assertEquals("Mumbai (Bombay)", cities.get(0).getName());
         for (int i = 0; i < cities.size() - 1; i++) {
-            assertTrue(cities.get(i).population() >= cities.get(i + 1).population());
+            assertTrue(cities.get(i).getPopulation() >= cities.get(i + 1).getPopulation());
         }
     }
 
@@ -33,9 +33,36 @@ public class CityReportsTopNIT extends DatabaseIT {
         ArrayList<City> cities = reports.getTopNCitiesContinent("Asia", 5);
 
         assertEquals(5, cities.size());
-        assertEquals("Mumbai (Bombay)", cities.get(0).name());
+        assertEquals("Mumbai (Bombay)", cities.get(0).getName());
         for (int i = 0; i < cities.size() - 1; i++) {
-            assertTrue(cities.get(i).population() >= cities.get(i + 1).population());
+            assertTrue(cities.get(i).getPopulation() >= cities.get(i + 1).getPopulation());
+        }
+    }
+
+    // R14: top N cities in a region
+    @Test
+    void topNCitiesRegionReturnsLargestCities() {
+        CityReports reports = new CityReports(con);
+
+        ArrayList<City> cities = reports.getTopNCitiesRegion("Western Europe", 5);
+
+        assertEquals(5, cities.size());
+        for (int i = 0; i < cities.size() - 1; i++) {
+            assertTrue(cities.get(i).getPopulation() >= cities.get(i + 1).getPopulation());
+        }
+    }
+
+    // R15: top N cities in a country
+    @Test
+    void topNCitiesCountryReturnsLargestCities() {
+        CityReports reports = new CityReports(con);
+
+        ArrayList<City> cities = reports.getTopNCitiesCountry("United Kingdom", 5);
+
+        assertEquals(5, cities.size());
+        assertEquals("London", cities.get(0).getName());
+        for (int i = 0; i < cities.size() - 1; i++) {
+            assertTrue(cities.get(i).getPopulation() >= cities.get(i + 1).getPopulation());
         }
     }
 }
