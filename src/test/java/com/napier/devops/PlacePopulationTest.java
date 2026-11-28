@@ -26,4 +26,12 @@ class PlacePopulationTest {
 
         assertEquals("Asia | 3705025700", place.toString());
     }
+
+    @Test
+    void supportsLargePopulationValues() {
+        PlacePopulation place =
+                new PlacePopulation("World", 6078749450L);
+
+        assertEquals(6078749450L, place.getPopulation());
+    }
 }
