@@ -18,4 +18,12 @@ class PlacePopulationTest {
         assertEquals("Asia", place.getName());
         assertEquals(3705025700L, place.getPopulation());
     }
+
+    @Test
+    void toStringShowsNameAndPopulation() {
+        PlacePopulation place =
+                new PlacePopulation("Asia", 3705025700L);
+
+        assertEquals("Asia | 3705025700", place.toString());
+    }
 }
